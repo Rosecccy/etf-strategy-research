@@ -1,0 +1,32 @@
+{
+  "name": "C2 selector layer live candidate",
+  "base_signal": {
+    "buy_low": 0.25,
+    "sell_high": 0.90,
+    "max_hold_days": 40,
+    "entry": "signal_close_confirm_next_trade_day_close_buy",
+    "fee": 0.0002,
+    "max_positions": 1
+  },
+  "baseline_selector": {
+    "train_window": "5y",
+    "score_func": "profit_first",
+    "min_train_count": 3,
+    "final_equity": 8145.361794033313,
+    "win_rate": 0.8055555555555556
+  },
+  "selected_selector": {
+    "train_window": "5y",
+    "score_func": "sortino_trade",
+    "recent_weight": "none",
+    "min_train_count": 3,
+    "mdd_filter": null,
+    "must_beat_benchmark": false,
+    "cooldown": 0.0,
+    "final_equity": 11188.25397912782,
+    "win_rate": 0.7777777777777778,
+    "max_drawdown": 0.160406039,
+    "cagr": 0.2297444569,
+    "annual_sortino": 3.4423193527
+  }
+}

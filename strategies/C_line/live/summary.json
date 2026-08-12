@@ -1,0 +1,17 @@
+{
+  "data_date": "2026-08-11",
+  "latest_data_date": "2026-08-11",
+  "run_date": "2026-08-11",
+  "data_lag_days": 0,
+  "latest_data_lag_days": 0,
+  "stale_symbol_count": 0,
+  "active_strategy_categories": 8,
+  "missing_rule_categories": 1,
+  "buy_signal_count": 0,
+  "holding_rows": 0,
+  "fallback_enabled": true,
+  "fallback_reason": "未启用额外 guard，按冻结年度选择执行",
+  "live_profile": "calendar_oos_profit_c23_extrema",
+  "extrema_exit_profile": "rolling_high_absence_5y_m1",
+  "decision_file": "07_live/today_decision.csv"
+}

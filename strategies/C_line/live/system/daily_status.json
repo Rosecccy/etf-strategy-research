@@ -1,0 +1,135 @@
+{
+  "generated_at": "2026-08-11 15:12:51",
+  "target_date": "2026-08-11",
+  "steps": [
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/init_state.py --asof 2026-08-11",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"C2.4\": {\n    \"line\": \"C2.4\",\n    \"mode\": \"paper_model\",\n    \"initialized\": true,\n    \"actual_account_confirmed\": false,\n    \"initialized_at\": \"2026-07-17 12:13:26\",\n    \"asof_date\": \"2026-07-17\",\n    \"source_file\": \"C\\\\fit\\\\fallback\\\\final_trades.csv\",\n    \"last_activity_date\": \"2026-07-13\",\n    \"last_exit_date\": \"2026-07-13\",\n    \"position_status\": \"cash\",\n    \"position\": null,\n    \"pending_order\": null\n  },\n  \"S1\": {\n    \"line\": \"S1\",\n    \"mode\": \"paper_model\",\n    \"initialized\": true,\n    \"actual_account_confirmed\": false,\n    \"initialized_at\": \"2026-07-17 12:13:26\",\n    \"asof_date\": \"2026-07-17\",\n    \"source_file\": \"S\\\\fit\\\\selector\\\\final_trades.csv\",\n    \"last_activity_date\": \"2026-07-01\",\n    \"last_exit_date\": \"2026-07-01\",\n    \"position_status\": \"cash\",\n    \"position\": null,\n    \"pending_order\": null\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/update_data.py --end 20260811",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"updated_at\": \"2026-08-11 15:07:37\",\n  \"symbols\": 30,\n  \"ok\": 30,\n  \"empty\": 0,\n  \"reuse_current\": 0,\n  \"error\": 0,\n  \"min_latest\": \"2026-08-11\",\n  \"max_latest\": \"2026-08-11\",\n  \"stale_count\": 0,\n  \"log\": \"raw\\\\update_log.csv\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe S/src/update_data.py --end 20260811 --delay 0 --retries 0",
+      "returncode": 0,
+      "stdout_tail": "[1/62] downloading 159666 交通运输ETF\n[2/62] downloading 512660 军工ETF\n[3/62] downloading 516970 基建ETF\n[4/62] downloading 512950 央企改革ETF\n[5/62] downloading 560080 中药ETF\n[6/62] downloading 159992 创新药ETF\n[7/62] downloading 159883 医疗器械ETF\n[8/62] downloading 516750 建材ETF\n[9/62] downloading 512400 有色金属ETF\n[10/62] downloading 159611 电力ETF\n[11/62] downloading 159930 能源ETF\n[12/62] downloading 515210 钢铁ETF\n[13/62] downloading 159902 中小板ETF\n[14/62] downloading 510880 红利ETF\n[15/62] downloading 515790 光伏ETF\n[16/62] downloading 159870 化工ETF\n[17/62] downloading 159663 机床ETF\n[18/62] downloading 159565 汽车零部件ETF\n[19/62] downloading 159755 电池ETF\n[20/62] downloading 512980 传媒ETF\n[21/62] downloading 159825 农业ETF\n[22/62] downloading 159996 家电ETF\n[23/62] downloading 159766 旅游ETF\n[24/62] downloading 515170 食品饮料ETF\n[25/62] downloading 159811 5G50ETF\n[26/62] downloading 159813 半导体ETF鹏华\n[27/62] downloading 512720 计算机ETF\n[28/62] downloading 159768 房地产ETF\n[29/62] downloading 512880 证券ETF\n[30/62] downloading 159887 银行ETF\n[31/62] downloading 510050 上证50ETF\n[32/62] downloading 510300 沪深300ETF\n[33/62] downloading 510500 中证500ETF\n[34/62] downloading 512100 中证1000ETF\n[35/62] downloading 159915 创业板ETF\n[36/62] downloading 588000 科创50ETF\n[37/62] downloading 512890 红利低波ETF\n[38/62] downloading 518880 黄金ETF\n[39/62] downloading 164701 贵金属LOF\n[40/62] downloading 161226 白银LOF\n[41/62] downloading 161715 大宗商品LOF\n[42/62] downloading 501018 南方原油LOF\n[43/62] downloading 162411 华宝油气LOF\n[44/62] downloading 511010 国债ETF\n[45/62] downloading 511260 十年国债ETF\n[46/62] downloading 159941 纳指ETF\n[47/62] downloading 513500 标普500ETF\n[48/62] downloading 513520 日经ETF\n[49/62] downloading 513030 德国30ETF\n[50/62] downloading 513050 中概互联网ETF\n[51/62] downloading 513600 恒生指数ETF\n[52/62] downloading 159954 H股ETF\n[53/62] downloading 513580 恒生科技ETF\n[54/62] downloading 513060 恒生医疗ETF\n[55/62] downloading 512010 医药ETF\n[56/62] downloading 512690 酒ETF\n[57/62] downloading 515030 新能源车ETF\n[58/62] downloading 159851 金融科技ETF\n[59/62] downloading 159852 软件ETF\n[60/62] downloading 501059 国企红利LOF\n[61/62] downloading 501225 全球芯片LOF\n[62/62] downloading 159616 农牧ETF\n{\n  \"updated_at\": \"2026-08-11 15:10:36\",\n  \"pool_file\": \"pool.csv\",\n  \"symbols\": 62,\n  \"ok\": 62,\n  \"empty\": 0,\n  \"error\": 0,\n  \"skip_existing\": 0,\n  \"min_latest\": \"2026-08-11\",\n  \"max_latest\": \"2026-08-11\",\n  \"stale_count\": 0,\n  \"log\": \"raw\\\\download_log.csv\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe S/src/repair_splits.py",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"repair_count\": 0,\n  \"symbols\": []\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/data_quality_gate.py --sync",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"generated_at\": \"2026-08-11 15:10:52\",\n  \"passed\": true,\n  \"canonical_source\": \"C:\\\\Users\\\\10619\\\\Desktop\\\\gsqh\\\\C\\\\raw\\\\etf\",\n  \"staging_source\": \"C:\\\\Users\\\\10619\\\\Desktop\\\\gsqh\\\\S\\\\raw\\\\etf\",\n  \"independent_reference\": \"C:\\\\Users\\\\10619\\\\Desktop\\\\gsqh\\\\D\\\\out\\\\research_30_extrema_cleaned_v2\\\\raw\",\n  \"pool_symbols\": 30,\n  \"approved_symbols\": [\n    \"159666\",\n    \"512660\",\n    \"516970\",\n    \"512950\",\n    \"560080\",\n    \"159992\",\n    \"159883\",\n    \"516750\",\n    \"512400\",\n    \"159611\",\n    \"159930\",\n    \"515210\",\n    \"159902\",\n    \"510880\",\n    \"515790\",\n    \"159870\",\n    \"159663\",\n    \"159565\",\n    \"159755\",\n    \"512980\",\n    \"159825\",\n    \"159996\",\n    \"159766\",\n    \"515170\",\n    \"159811\",\n    \"159813\",\n    \"512720\",\n    \"159768\",\n    \"512880\",\n    \"159887\"\n  ],\n  \"hard_jump_threshold\": 0.205,\n  \"review_jump_threshold\": 0.115,\n  \"all_symbols_have_clean_source\": true,\n  \"cross_source_returns_passed\": true,\n  \"canonical_passed\": true,\n  \"synchronized\": true,\n  \"rule\": \"Any missing file, invalid OHLC, duplicate date or absolute daily close jump above 20.5% blocks the entire pool. Moves above 11.5% are separately reported and require independent-source return agreement.\",\n  \"s_extended_gate\": {\n    \"passed\": true,\n    \"pool_symbols\": 62,\n    \"approved_count\": 62,\n    \"excluded_symbols\": [],\n    \"quarantined_staging_symbols\": []\n  },\n  \"historical_model_artifacts\": {\n    \"passed\": true,\n    \"warning\": \"Pre-clean historical performance files are not valid as clean-data evidence when this check fails.\",\n    \"failed_artifacts\": []\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/run_daily.py --skip-update",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"steps\": [\n    {\n      \"cmd\": \"C:\\\\Users\\\\10619\\\\Desktop\\\\gsqh\\\\.venv\\\\Scripts\\\\python.exe C/src/update_data.py\",\n      \"skipped\": true,\n      \"returncode\": 0\n    },\n    {\n      \"cmd\": \"C:\\\\Users\\\\10619\\\\Desktop\\\\gsqh\\\\.venv\\\\Scripts\\\\python.exe C/src/extrema_live.py\",\n      \"returncode\": 0,\n      \"stdout\": \"{\\n  \\\"generated_at\\\": \\\"2026-08-11 15:11:28\\\",\\n  \\\"latest_data_date\\\": \\\"2026-08-11\\\",\\n  \\\"model_year\\\": 2026,\\n  \\\"train_cutoff_exclusive\\\": \\\"2026-01-01\\\",\\n  \\\"train_rows\\\": 6880,\\n  \\\"train_highs\\\": 854,\\n  \\\"confirmation_delay_days\\\": 5,\\n  \\\"threshold_window_years\\\": 5,\\n  \\\"threshold\\\": 0.0325145936415612,\\n  \\\"model_signature\\\": \\\"8f1034bad3df17a1\\\",\\n  \\\"candidate_count\\\": 778,\\n  \\\"signal_count\\\": 140,\\n  \\\"latest_signal_date\\\": \\\"2026-08-10\\\",\\n  \\\"reference_score_max_abs_error\\\": null,\\n  \\\"causal_guarantee\\\": \\\"Only labels known before the model year are used for fitting; live labels are never read.\\\"\\n}\\n\",\n      \"stderr\": \"\"\n    },\n    {\n      \"cmd\": \"C:\\\\Users\\\\10619\\\\Desktop\\\\gsqh\\\\.venv\\\\Scripts\\\\python.exe C/src/live_signal.py\",\n      \"returncode\": 0,\n      \"stdout\": \"{\\n  \\\"data_date\\\": \\\"2026-08-11\\\",\\n  \\\"latest_data_date\\\": \\\"2026-08-11\\\",\\n  \\\"run_date\\\": \\\"2026-08-11\\\",\\n  \\\"data_lag_days\\\": 0,\\n  \\\"latest_data_lag_days\\\": 0,\\n  \\\"stale_symbol_count\\\": 0,\\n  \\\"active_strategy_categories\\\": 8,\\n  \\\"missing_rule_categories\\\": 1,\\n  \\\"buy_signal_count\\\": 0,\\n  \\\"holding_rows\\\": 0,\\n  \\\"fallback_enabled\\\": true,\\n  \\\"fallback_reason\\\": \\\"\\\\u672a\\\\u542f\\\\u7528\\\\u989d\\\\u5916 guard\\\\uff0c\\\\u6309\\\\u51bb\\\\u7ed3\\\\u5e74\\\\u5ea6\\\\u9009\\\\u62e9\\\\u6267\\\\u884c\\\",\\n  \\\"live_profile\\\": \\\"calendar_oos_profit_c23_extrema\\\",\\n  \\\"extrema_exit_profile\\\": \\\"rolling_high_absence_5y_m1\\\",\\n  \\\"decision_file\\\": \\\"07_live/today_decision.csv\\\"\\n}\\n\",\n      \"stderr\": \"\"\n    },\n    {\n      \"cmd\": \"C:\\\\Users\\\\10619\\\\Desktop\\\\gsqh\\\\.venv\\\\Scripts\\\\python.exe C/src/account.py reconcile\",\n      \"returncode\": 0,\n      \"stdout\": \"{\\n  \\\"updated_at\\\": \\\"2026-08-11 15:11:32\\\",\\n  \\\"cash\\\": null,\\n  \\\"position_count\\\": 0,\\n  \\\"market_value\\\": 0.0,\\n  \\\"total_equity\\\": 0.0\\n}\\n\",\n      \"stderr\": \"\"\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe S/src/run_s1_live.py",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"asof_date\": \"2026-08-11\",\n  \"selector_score_kind\": \"strict_rolling\",\n  \"selector_scheme\": \"annual_past_only\",\n  \"current_param\": {\n    \"year\": 2026,\n    \"param_id\": \"domestic_plus_precious_i20_h10_ma120_m20_stable_a40_v60_ac100_hist250_amt2000000\",\n    \"score\": 0.1817810422545119,\n    \"window_scores\": \"[0.28641440988681016, 0.18178104225451197]\",\n    \"scope\": \"domestic_plus_precious\",\n    \"idle\": 20,\n    \"hold\": 10,\n    \"ma\": 120,\n    \"mom\": 20,\n    \"model\": \"stable\",\n    \"alpha\": 0.4,\n    \"vol_cap\": 0.6,\n    \"accel_cap\": 1.0,\n    \"activity_ratio\": 1.0,\n    \"avg_shadow_trades\": 3.671428571428572,\n    \"recent_excess\": 0.1652723042097204,\n    \"recent_shadow_trades\": 3.0,\n    \"excess_mean\": 0.2293866292680017,\n    \"under_ratio\": 0.1428571428571428,\n    \"excess_std\": 0.1903415844206123,\n    \"max_win\": 0.163849154746424,\n    \"max_loss\": -0.1024793388429751,\n    \"selector_score\": 0.1727953279687977,\n    \"reason\": \"selected\",\n    \"method_id\": \"w5-7_balanced_g+0.04\",\n    \"train_end\": 2025\n  },\n  \"candidate_count\": 8,\n  \"top_symbol\": \"159930\",\n  \"top_name\": \"能源ETF\",\n  \"fresh_symbol_count\": 51,\n  \"stale_symbol_count\": 0,\n  \"stale_symbols_file\": \"live\\\\stale_symbols.csv\",\n  \"decision\": {\n    \"asof_date\": \"2026-08-11\",\n    \"action\": \"next_trade_close_buy\",\n    \"reason\": \"空仓门槛已满足，买入排名第一候选\",\n    \"symbol\": \"159930\",\n    \"display_name\": \"能源ETF\",\n    \"score\": 0.7975,\n    \"idle_trade_days\": 29,\n    \"required_idle_days\": 20,\n    \"planned_hold_days\": 10,\n    \"state_mode\": \"paper_model\",\n    \"actual_account_confirmed\": false\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/hybrid_live.py",
+      "returncode": 1,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"C:\\Users\\10619\\Desktop\\gsqh\\C\\src\\hybrid_live.py\", line 326, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\10619\\Desktop\\gsqh\\C\\src\\hybrid_live.py\", line 216, in main\n    raise RuntimeError(\"混合模型正式审计未通过，拒绝生成实盘建议\")\nRuntimeError: 混合模型正式审计未通过，拒绝生成实盘建议\n"
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe D/src/daily_panic_live.py",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"generated_at\": \"2026-08-11 15:12:50\",\n  \"version\": \"D3-clean-20260801\",\n  \"data_date\": \"2026-08-11\",\n  \"market_fear\": 58.03099017384732,\n  \"market_greed\": 41.96900982615268,\n  \"market_pass\": true,\n  \"expected_execution_date\": \"2026-08-12\",\n  \"model_account\": {\n    \"action\": \"继续持有\",\n    \"symbol\": \"159930\",\n    \"name\": \"能源ETF\",\n    \"reason\": \"尚未触发贪婪、最长持有或滞涨回本卖点\",\n    \"position_state\": {\n      \"sell\": false,\n      \"reason\": \"尚未触发贪婪、最长持有或滞涨回本卖点\",\n      \"held_trading_days\": 38,\n      \"peak_return\": 0.06973848069738464,\n      \"current_return\": 0.06973848069738464,\n      \"stale_exit_triggered\": false,\n      \"active_stale_rule\": \"h30:cap20:target5\"\n    },\n    \"estimated_value\": 18814.030430000006\n  },\n  \"if_real_account_is_cash\": {\n    \"action\": \"下一交易日收盘买入\",\n    \"symbol\": \"159813\",\n    \"name\": \"半导体ETF鹏华\",\n    \"reason\": \"市场恐慌分58.03，ETF自身恐慌分88.36\"\n  },\n  \"candidate_count\": 13\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe D/src/build_unified_site.py",
+      "returncode": 0,
+      "stdout_tail": "Dashboard data written: C:\\Users\\10619\\Desktop\\gsqh\\D\\site\\data\\dashboard.json\n",
+      "stderr_tail": ""
+    }
+  ],
+  "data_quality": {
+    "generated_at": "2026-08-11 15:10:52",
+    "passed": true,
+    "canonical_source": "C:\\Users\\10619\\Desktop\\gsqh\\C\\raw\\etf",
+    "staging_source": "C:\\Users\\10619\\Desktop\\gsqh\\S\\raw\\etf",
+    "independent_reference": "C:\\Users\\10619\\Desktop\\gsqh\\D\\out\\research_30_extrema_cleaned_v2\\raw",
+    "pool_symbols": 30,
+    "approved_symbols": [
+      "159666",
+      "512660",
+      "516970",
+      "512950",
+      "560080",
+      "159992",
+      "159883",
+      "516750",
+      "512400",
+      "159611",
+      "159930",
+      "515210",
+      "159902",
+      "510880",
+      "515790",
+      "159870",
+      "159663",
+      "159565",
+      "159755",
+      "512980",
+      "159825",
+      "159996",
+      "159766",
+      "515170",
+      "159811",
+      "159813",
+      "512720",
+      "159768",
+      "512880",
+      "159887"
+    ],
+    "hard_jump_threshold": 0.205,
+    "review_jump_threshold": 0.115,
+    "all_symbols_have_clean_source": true,
+    "cross_source_returns_passed": true,
+    "canonical_passed": true,
+    "synchronized": true,
+    "rule": "Any missing file, invalid OHLC, duplicate date or absolute daily close jump above 20.5% blocks the entire pool. Moves above 11.5% are separately reported and require independent-source return agreement.",
+    "s_extended_gate": {
+      "passed": true,
+      "pool_symbols": 62,
+      "approved_count": 62,
+      "excluded_symbols": [],
+      "quarantined_staging_symbols": []
+    },
+    "historical_model_artifacts": {
+      "passed": true,
+      "warning": "Pre-clean historical performance files are not valid as clean-data evidence when this check fails.",
+      "failed_artifacts": []
+    }
+  },
+  "freshness": {
+    "C": {
+      "total": 30,
+      "stale": 0
+    },
+    "S": {
+      "total": 62,
+      "stale": 0
+    }
+  }
+}

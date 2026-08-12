@@ -1,0 +1,9 @@
+{
+  "year": 2026,
+  "signature": "8f1034bad3df17a1",
+  "train_cutoff_exclusive": "2026-01-01",
+  "train_rows": 6880,
+  "train_highs": 854,
+  "features": 246,
+  "models": 3
+}

@@ -1,0 +1,92 @@
+{
+  "generated_at": "2026-07-30 13:24:29",
+  "data_end": "2026-07-29",
+  "train_years": [
+    2021,
+    2022,
+    2023
+  ],
+  "holdout_years": [
+    2025,
+    2026
+  ],
+  "research_winner": {
+    "overlay": "enhanced_ge_40",
+    "exit_key": "hold_90_greed_70",
+    "train_closed": 194,
+    "train_win_rate": 0.7164948453608248,
+    "train_avg_return": 0.05583135555809352
+  },
+  "holdout": {
+    "train_rank": 1,
+    "overlay": "enhanced_ge_40",
+    "family": "enhanced",
+    "exit_key": "hold_90_greed_70",
+    "train_closed": 194,
+    "train_win_rate": 0.7164948453608248,
+    "train_avg_return": 0.05583135555809352,
+    "valid_signals": 64,
+    "valid_closed": 40,
+    "valid_open": 24,
+    "valid_wins": 38,
+    "valid_win_rate": 0.95,
+    "valid_avg_return": 0.05248501580566517,
+    "valid_median_return": 0.04617188079175616,
+    "valid_realized_pnl_per_100": 209.94006322266068,
+    "valid_unrealized_pnl_per_100": -532.9858371946724,
+    "valid_mark_to_market_pnl_per_100": -323.0457739720117,
+    "valid_covered_years": 2,
+    "valid_worst_year_win_rate": 0.9393939393939394,
+    "valid_year_win_rate_std": 0.030303030303030276
+  },
+  "live_2026_choice_using_prior_years": {
+    "overlay": "enhanced_ge_40",
+    "exit_key": "hold_90_greed_70"
+  },
+  "latest_sentiment": {
+    "date": "2026-07-29",
+    "fear_core": 68.38624338624338,
+    "fear_qvix": NaN,
+    "fear_enhanced": 68.38624338624338,
+    "greed_enhanced": 31.61375661375662,
+    "regime": "恐惧"
+  },
+  "best_portfolio": {
+    "scenario": "fear_greed_1slot_liquidity",
+    "max_positions": 1,
+    "ranking": "liquidity",
+    "initial_capital": 10000.0,
+    "final_value": 15171.600000000002,
+    "net_profit": 5171.600000000002,
+    "total_return": 0.5171600000000003,
+    "cagr": 0.07792445711000506,
+    "accepted_trades": 12,
+    "closed_trades": 12,
+    "win_rate": 0.5833333333333334,
+    "avg_net_return": 0.039606389543398325,
+    "open_positions": 0,
+    "cash": 15171.600000000002,
+    "open_mark_value": 0.0,
+    "as_of": "2026-07-29",
+    "fee_rule": "万三，单边最低5元；100股整数手"
+  },
+  "best_holdout_portfolio": {
+    "scenario": "baseline_1slot_fear",
+    "max_positions": 1,
+    "ranking": "fear",
+    "initial_capital": 10000.0,
+    "final_value": 12726.2,
+    "net_profit": 2726.2000000000007,
+    "total_return": 0.2726200000000001,
+    "cagr": 0.16800533354831804,
+    "accepted_trades": 7,
+    "closed_trades": 7,
+    "win_rate": 0.42857142857142855,
+    "avg_net_return": 0.03794159365475621,
+    "open_positions": 0,
+    "cash": 12726.2,
+    "open_mark_value": 0.0,
+    "as_of": "2026-07-29",
+    "fee_rule": "万三，单边最低5元；100股整数手"
+  }
+}

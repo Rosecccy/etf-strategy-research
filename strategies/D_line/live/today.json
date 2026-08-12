@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-08-10 15:38:17",
+  "data_sync": {
+    "updated_symbols": 30,
+    "appended_rows": 235,
+    "latest_date": "2026-08-10"
+  },
+  "data_date": "2026-08-10",
+  "expected_execution_date": "2026-08-11",
+  "action": "WAIT",
+  "symbol": "",
+  "name": "",
+  "execution_price": "下一交易日收盘价",
+  "positions": 1,
+  "ranking": "0.5*市场恐惧分 + 0.5*ETF自身恐惧分",
+  "fear_score": 48.488284202569915,
+  "greed_score": 51.511715797430085,
+  "entry_threshold": 45.0,
+  "greed_exit": 70.0,
+  "max_hold_days": 90,
+  "technical_buy_count": 0,
+  "allowed_buy_count": 0,
+  "technical_sell_count": 4,
+  "buy_rule_id": "M|VOL|180|5 + W|DIF|120|5",
+  "sell_rule_id": "M|KDJ_J|180|5",
+  "reason": "恐惧过滤已通过，但今日没有技术买点。",
+  "note": "卖出只对真实持仓检查：技术卖点、持有满7日后的贪婪70退出、或90日上限，均在下一交易日收盘执行。"
+}

@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-08-01 11:36:59",
+  "status": "formal_clean",
+  "method_id": "w5-7_balanced_g+0.04",
+  "data_quality_passed": true,
+  "approved_universe": 61,
+  "excluded_symbols": [
+    "512690"
+  ],
+  "selection": "Each test year uses only completed earlier-year data; method chosen on 2016-2023.",
+  "development_years": "2016-2023",
+  "holdout_years": "2024-2026",
+  "candidate_params": 432,
+  "method_variants": 80,
+  "all": {
+    "trades": 50,
+    "final_1000": 13362.080287582115,
+    "win_rate": 0.72,
+    "avg_return": 0.05780222030088629,
+    "max_drawdown": -0.15973409512267267
+  },
+  "holdout": {
+    "trades": 21,
+    "final_1000": 2309.8113512667155,
+    "win_rate": 0.6666666666666666,
+    "avg_return": 0.04366624310294336,
+    "max_drawdown": -0.05050034199049125
+  },
+  "net_10000": {
+    "initial_cash": 10000.0,
+    "final_cash": 128327.04074000003,
+    "net_profit": 118327.04074000003,
+    "executed_trades": 50
+  },
+  "promotion_reason": "The prior formal table contained an excluded ETF; the clean retrain is the only admissible formal S history.",
+  "execution_corrected": {
+    "rule": "A fallback position exits at an incoming main entry close before the main purchase.",
+    "all": {
+      "trades": 50,
+      "final_1000": 10420.129055716354,
+      "win_rate": 0.7,
+      "avg_return": 0.053030763245462714,
+      "max_drawdown": -0.15973409512267256,
+      "losing_years": 3
+    },
+    "holdout": {
+      "trades": 21,
+      "final_1000": 1895.918378806536,
+      "win_rate": 0.6190476190476191,
+      "avg_return": 0.034789790669571524,
+      "max_drawdown": -0.1289537712895379,
+      "losing_years": 1
+    },
+    "net_10000": {
+      "initial_cash": 10000.0,
+      "final_cash": 100089.89242999999,
+      "net_profit": 90089.89242999999,
+      "executed_trades": 50
+    }
+  }
+}

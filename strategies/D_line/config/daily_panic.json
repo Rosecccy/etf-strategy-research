@@ -1,0 +1,54 @@
+{
+  "version": "D3-clean-20260801",
+  "name": "D3 每日恐慌低位 + 滞涨回本退出",
+  "status": "formal_clean",
+  "universe": "C canonical 30-ETF clean whitelist",
+  "market_fear_threshold": 55,
+  "symbol_fear_threshold": 70,
+  "qvix_weight": 0.2,
+  "greed_exit": 70,
+  "max_hold_trading_days": 90,
+  "min_hold_before_greed_exit": 7,
+  "max_positions": 1,
+  "ranking": "0.5*市场恐慌分 + 0.5*ETF自身恐慌分",
+  "execution": "收盘后确认信号，下一交易日收盘执行",
+  "fees": {
+    "rate": 0.0003,
+    "minimum_per_side_cny": 5
+  },
+  "stale_recovery_exit": {
+    "enabled": true,
+    "definition": "持有达到最短天数、期间最高收益仍低于上限，且当前收益恢复到目标值时发出退出信号",
+    "execution": "信号后下一交易日收盘卖出",
+    "selected_by_year": {
+      "2024": {
+        "min_hold": 20,
+        "peak_cap": 0.01,
+        "recovery_target": 0.002
+      },
+      "2025": {
+        "min_hold": 30,
+        "peak_cap": 0.02,
+        "recovery_target": 0.005
+      },
+      "2026": {
+        "min_hold": 30,
+        "peak_cap": 0.02,
+        "recovery_target": 0.005
+      }
+    }
+  },
+  "selector": {
+    "mode": "annual_past_only",
+    "training_window": "all_available_from_2016",
+    "selected_by_development_years": "2019-2023",
+    "untouched_holdout": "2024-2026",
+    "hard_gate": "收益与胜率同时提升，两个相邻历史窗口均通过"
+  },
+  "audit": {
+    "summary": "out/formal_clean/summary.json",
+    "annual_choices": "out/formal_clean/selected_by_year.csv",
+    "formal_trades": "out/formal_clean/account_trades.csv",
+    "data_quality": "C/raw/quality.json"
+  }
+}

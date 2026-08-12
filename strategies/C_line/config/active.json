@@ -1,0 +1,11 @@
+{
+  "formal_account_strategy": "C2.4-clean-20260801",
+  "formal_config": "C/cfg/live_model.json",
+  "daily_decision": "C/live/today_decision.csv",
+  "daily_runner": "C/src/run_all_daily.py",
+  "component_engines": {
+    "C2.4": "clean strict rolling main and C fallback"
+  },
+  "rule": "C/S hybrid clean retrain failed the promotion gate; C2.4 is the formal C instruction.",
+  "activated_on": "2026-08-01"
+}

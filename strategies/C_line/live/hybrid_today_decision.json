@@ -1,0 +1,67 @@
+{
+  "decision": {
+    "generated_at": "2026-08-01 10:17:14",
+    "model": "C3-CS 双引擎严格滚动组合",
+    "version": "C3-CS-20260730",
+    "asof_date": "2026-07-31",
+    "action": "next_trade_close_buy",
+    "symbol": "510880",
+    "display_name": "红利ETF",
+    "source": "fallback_buy",
+    "planned_entry_date": "2026-08-03",
+    "planned_hold_days": 10,
+    "selection_score": 0.01702992804082187,
+    "reason": "补偿候选按冻结历史分数择优，选择 C 引擎",
+    "account_mode": "paper_model",
+    "actual_account_confirmed": false,
+    "account_warning": "当前为模型账户；真实持仓与成交需人工确认后才能作为账户指令。",
+    "runtime_data_quality": "passed",
+    "historical_performance_clean_recheck": "pending"
+  },
+  "fallback_scores": [
+    {
+      "family": "C",
+      "score": 0.01702992804082187,
+      "closed_trades": 10,
+      "mean_return": 0.02385255754982811,
+      "win_rate": 0.5,
+      "downside_rms": 0.02729051803602496,
+      "eligible": true
+    }
+  ],
+  "c_engine": {
+    "data_date": "2026-07-31",
+    "latest_data_date": "2026-07-31",
+    "symbol": "510880",
+    "display_name": "红利ETF",
+    "category": "宽基/红利 fallback",
+    "strategy_id": "FB_red_ma_i10_h10_ma20_m20",
+    "decision_type": "fallback_buy",
+    "next_action": "next_trade_close_buy",
+    "reason": "未启用额外 guard，按冻结年度选择执行",
+    "planned_hold_days": 10,
+    "idle_trade_days": 14,
+    "required_idle_days": 10,
+    "profile": "calendar_oos_profit_c23_extrema",
+    "entry_date": "2026-08-03",
+    "ret20": 0.0912698412698411,
+    "ytd": 0.0377358490566037,
+    "above_ma60": true
+  },
+  "s_engine": {
+    "asof_date": "2026-07-31",
+    "action": "wait_cash_rule",
+    "reason": "本年度滚动选择为空仓，不启用空仓补偿。",
+    "symbol": "",
+    "display_name": null,
+    "score": null,
+    "idle_trade_days": 22,
+    "required_idle_days": 0,
+    "planned_hold_days": 0,
+    "state_mode": "paper_model",
+    "actual_account_confirmed": false
+  },
+  "formal_audit_passed": false,
+  "legacy_formal_audit_passed": true,
+  "data_quality_warning": "当前信号只读取质量白名单数据；清洗前历史收益文件仍需重新训练复核，不作为干净数据业绩证据。"
+}

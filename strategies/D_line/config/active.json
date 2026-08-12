@@ -1,0 +1,6 @@
+{
+  "active_version": "D3-stale-recovery",
+  "config": "daily_panic.json",
+  "activated_at": "2026-07-31",
+  "reason": "滚动样本外收益与胜率同时提升，双窗口稳定，并通过逐笔价格、T+1与因果审计"
+}

@@ -1,0 +1,137 @@
+﻿{
+  "name": "C2.4 strict rolling main plus fallback",
+  "deployment_status": "live_active",
+  "profile": "calendar_oos_profit_c23_extrema",
+  "main_strategy": {
+    "source": "06_selector",
+    "max_hold_days": 40,
+    "adaptive_exit": {
+      "enabled": false,
+      "profile_id": "research_grid_055_not_promoted",
+      "strong_bonus_days": 0,
+      "weak_cut_days": 0,
+      "min_hold_days": 5,
+      "trend_break_enabled": false,
+      "strong_ret20_min": 0.03,
+      "weak_ret20_max": -0.03,
+      "trend_break_ret20_below": 0.0
+    },
+    "extrema_exit": {
+      "enabled": true,
+      "profile_id": "rolling_high_absence_5y_m1",
+      "selection_method": "strict_annual_rolling_past_only",
+      "confirmation_delay_days": 5,
+      "recent_signal_days": 15,
+      "delay_trade_days": 8,
+      "model_train_cutoff": "year_start_exclusive",
+      "threshold_window_years": 5,
+      "state_file": "07_live/extrema_exit_state.csv"
+    }
+  },
+  "schedule": {
+    "task_name": "ETF_Strategy_Daily_1515",
+    "run_time": "15:05",
+    "deadline": "15:15",
+    "launcher": "run_daily_1515.bat"
+  },
+  "fallback": {
+    "enabled": true,
+    "train_window": "3y",
+    "score_func": "mean_minus_underperformance_and_stability_penalty",
+    "min_years": 3,
+    "variant": "raw",
+    "idle_cap": 80,
+    "selection_file": "fit/fallback/selected_by_year.csv",
+    "guard_enabled": false,
+    "annual_rollover_policy": "skip_entry_if_expected_exit_crosses_year",
+    "live_start_date": "2026-07-09",
+    "strict_causal_idle": true,
+    "underperformance_penalty": 0.1,
+    "stability_penalty": 0.1,
+    "cash_gate": 0.04,
+    "profiles": {
+      "calendar_oos_profit_c22_rollover": {
+        "red_ma_ret20_min": -0.1,
+        "red_ma_ytd_min": -0.2,
+        "rotate_mom_ret20_min": -0.1,
+        "rotate_mom_ytd_min": -0.2,
+        "rotate_mom_require_ma60": false,
+        "cooldown_days_after_loss": 0
+      },
+      "calendar_oos_profit_c23_extrema": {
+        "red_ma_ret20_min": -0.1,
+        "red_ma_ytd_min": -0.2,
+        "rotate_mom_ret20_min": -0.1,
+        "rotate_mom_ytd_min": -0.2,
+        "rotate_mom_require_ma60": false,
+        "cooldown_days_after_loss": 0
+      }
+    }
+  },
+  "research_validation": {
+    "previous_profile_id": "baseline_fixed_hold_40",
+    "current_profile_id": "rolling_high_absence_5y_m1",
+    "previous_final_cash": 27039.26476410421,
+    "current_final_cash": 38807.41831853705,
+    "previous_trade_count": 86,
+    "current_trade_count": 86,
+    "previous_win_rate": 0.7209302325581395,
+    "current_win_rate": 0.7441860465116279,
+    "previous_max_drawdown": -0.16662272576931147,
+    "current_max_drawdown": -0.16662272576931147,
+    "previous_underperform_years": [
+      2017,
+      2019
+    ],
+    "current_underperform_years": [
+      2017,
+      2019
+    ],
+    "rolling_runs_beating_baseline": 12,
+    "rolling_runs_total": 12,
+    "rolling_cash_range": [
+      36879.77407906977,
+      38807.41831853705
+    ],
+    "selection_reason": "Promoted after all 12 strict annual rolling variants beat the 27039.26 baseline without worsening maximum drawdown. Only C exit timing changes; entries, ETF selection and position sizing remain unchanged."
+  },
+  "causality_audit": {
+    "audit_date": "2026-07-14",
+    "legacy_reported_final_cash": 38807.41831853705,
+    "legacy_value_status": "research_only_contains_idle_window_lookahead",
+    "fallback_entries_before_idle_threshold": 19,
+    "fallback_entries_total": 50,
+    "trusted_main_only_final_cash": 16131.917605706978,
+    "trusted_main_only_win_rate": 0.8333333333333334,
+    "trusted_main_only_max_drawdown": -0.1400955833677986,
+    "fallback_live_enabled": true,
+    "strict_replacement_source": "fit/fallback/selected_by_year.csv"
+  },
+  "strict_fallback_validation": {
+    "development_years": "2015-2023",
+    "holdout_years": "2024-2026",
+    "candidate_params": 300,
+    "method_variants": 324,
+    "nearby_methods_within_95pct_development": 60,
+    "gross_final_cash_1000": 20073.205284637228,
+    "net_final_cash_1000": 17383.000277257837,
+    "net_final_cash_10000": 195208.92507181648,
+    "trade_count": 46,
+    "win_rate": 0.782608695652174,
+    "max_drawdown": -0.14009558336779837,
+    "holdout_return": 1.0269375321339274,
+    "selection_run": "w3y_m3_u0.10_s0.10_g0.04"
+  },
+  "shadow_validation": {
+    "line": "S1",
+    "baseline_final_cash": 42539.24091103174,
+    "baseline_trade_count": 104,
+    "baseline_win_rate": 0.6923076923076923,
+    "result": "no_upgrade",
+    "tested_rolling_best": 42201.56019256919,
+    "rolling_runs_beating_baseline": 0,
+    "rolling_runs_total": 12,
+    "reason": "The same high-point exit overlay failed all 12 strict rolling comparisons, so S1 remains unchanged at 42539.24."
+  }
+}
+

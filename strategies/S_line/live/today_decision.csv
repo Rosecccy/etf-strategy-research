@@ -1,0 +1,2 @@
+﻿asof_date,action,reason,symbol,display_name,score,idle_trade_days,required_idle_days,planned_hold_days,state_mode,actual_account_confirmed
+2026-08-11,next_trade_close_buy,空仓门槛已满足，买入排名第一候选,159930,能源ETF,0.7975,29,20,10,paper_model,False

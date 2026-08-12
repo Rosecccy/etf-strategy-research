@@ -1,0 +1,14 @@
+{
+  "line": "S1",
+  "mode": "paper_model",
+  "initialized": true,
+  "actual_account_confirmed": false,
+  "initialized_at": "2026-07-17 12:13:26",
+  "asof_date": "2026-07-17",
+  "source_file": "S\\fit\\selector\\final_trades.csv",
+  "last_activity_date": "2026-07-01",
+  "last_exit_date": "2026-07-01",
+  "position_status": "cash",
+  "position": null,
+  "pending_order": null
+}

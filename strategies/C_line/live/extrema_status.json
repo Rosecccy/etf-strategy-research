@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-08-11 15:11:28",
+  "latest_data_date": "2026-08-11",
+  "model_year": 2026,
+  "train_cutoff_exclusive": "2026-01-01",
+  "train_rows": 6880,
+  "train_highs": 854,
+  "confirmation_delay_days": 5,
+  "threshold_window_years": 5,
+  "threshold": 0.0325145936415612,
+  "model_signature": "8f1034bad3df17a1",
+  "candidate_count": 778,
+  "signal_count": 140,
+  "latest_signal_date": "2026-08-10",
+  "reference_score_max_abs_error": null,
+  "causal_guarantee": "Only labels known before the model year are used for fitting; live labels are never read."
+}

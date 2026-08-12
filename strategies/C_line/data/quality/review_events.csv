@@ -1,0 +1,3 @@
+﻿source,symbol,date,previous_close,close,return,event_type,hard_failure
+S_staging,515210,2023-12-18,1.226,1.063,-0.13295269168026103,limit_review,False
+S_staging,510880,2023-12-18,2.978,2.559,-0.14069845533915382,limit_review,False

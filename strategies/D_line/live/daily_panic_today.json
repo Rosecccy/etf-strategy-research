@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-08-11 15:12:50",
+  "version": "D3-clean-20260801",
+  "data_date": "2026-08-11",
+  "market_fear": 58.03099017384732,
+  "market_greed": 41.96900982615268,
+  "market_pass": true,
+  "expected_execution_date": "2026-08-12",
+  "model_account": {
+    "action": "继续持有",
+    "symbol": "159930",
+    "name": "能源ETF",
+    "reason": "尚未触发贪婪、最长持有或滞涨回本卖点",
+    "position_state": {
+      "sell": false,
+      "reason": "尚未触发贪婪、最长持有或滞涨回本卖点",
+      "held_trading_days": 38,
+      "peak_return": 0.06973848069738464,
+      "current_return": 0.06973848069738464,
+      "stale_exit_triggered": false,
+      "active_stale_rule": "h30:cap20:target5"
+    },
+    "estimated_value": 18814.030430000006
+  },
+  "if_real_account_is_cash": {
+    "action": "下一交易日收盘买入",
+    "symbol": "159813",
+    "name": "半导体ETF鹏华",
+    "reason": "市场恐慌分58.03，ETF自身恐慌分88.36"
+  },
+  "candidate_count": 13
+}

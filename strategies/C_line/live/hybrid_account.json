@@ -1,0 +1,11 @@
+{
+  "mode": "paper_model",
+  "actual_account_confirmed": false,
+  "initialized_at": "2026-07-30 16:17:31",
+  "asof_date": "2026-07-30",
+  "position_status": "cash",
+  "position": null,
+  "last_activity_date": "2026-07-13",
+  "pending_order": null,
+  "note": "如有真实成交，必须先同步账户状态，系统不会自行假定成交。"
+}

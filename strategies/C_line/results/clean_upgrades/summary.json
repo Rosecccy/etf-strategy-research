@@ -1,0 +1,115 @@
+{
+  "generated_at": "2026-08-01 13:14:54",
+  "quality_gate": "C 30/30 and S 61/62 approved; rejected data excluded",
+  "selection": "evidence floor selected on 2019-2023; each test year uses only prior completed years; 2024-2026 is rolling OOS but no longer a blind holdout after repeated research",
+  "execution": "state after close, next-close execution, 0.03% commission with CNY 5 minimum, 100-share lots",
+  "results": [
+    {
+      "line": "C",
+      "method": "annual past-only strong-trend exit extension with historical evidence gate",
+      "selected_evidence_floor_on_2019_2023": 32,
+      "active_years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "baseline_full": {
+        "trades": 46,
+        "gross_final_1000": 20130.055241677026,
+        "net_final_10000": 193722.57168999998,
+        "win_rate": 0.7608695652173914,
+        "avg_return": 0.0730466664922882,
+        "avg_annual_return": 0.2786667955624998,
+        "positive_year_rate": 0.9230769230769231,
+        "max_drawdown": -0.13975155279503104
+      },
+      "winner_full": {
+        "trades": 46,
+        "gross_final_1000": 22524.779435479817,
+        "net_final_10000": 216775.71758000008,
+        "win_rate": 0.7608695652173914,
+        "avg_return": 0.0758784147893653,
+        "avg_annual_return": 0.29078493808028916,
+        "positive_year_rate": 0.9230769230769231,
+        "max_drawdown": -0.13975155279503104
+      },
+      "baseline_holdout": {
+        "trades": 10,
+        "gross_final_1000": 1970.8391747097833,
+        "net_final_10000": 19543.801,
+        "win_rate": 0.7,
+        "avg_return": 0.0755716838868994,
+        "avg_annual_return": 0.26914776119164,
+        "positive_year_rate": 1.0,
+        "max_drawdown": -0.038081805359661325
+      },
+      "winner_holdout": {
+        "trades": 10,
+        "gross_final_1000": 2122.994274869461,
+        "net_final_10000": 21046.228830000004,
+        "win_rate": 0.7,
+        "avg_return": 0.08434651832398549,
+        "avg_annual_return": 0.3060155062301981,
+        "positive_year_rate": 1.0,
+        "max_drawdown": -0.038081805359661325
+      },
+      "stable_evidence_floors_improved": 5,
+      "promoted": true
+    },
+    {
+      "line": "S",
+      "method": "annual past-only strong-trend exit extension with historical evidence gate",
+      "selected_evidence_floor_on_2019_2023": 5,
+      "active_years": [
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "baseline_full": {
+        "trades": 50,
+        "gross_final_1000": 10420.129055716357,
+        "net_final_10000": 100089.89242999999,
+        "win_rate": 0.7,
+        "avg_return": 0.0530307632454627,
+        "avg_annual_return": 0.21995760179215956,
+        "positive_year_rate": 0.7692307692307693,
+        "max_drawdown": -0.15973409512267256
+      },
+      "winner_full": {
+        "trades": 50,
+        "gross_final_1000": 13466.097668346472,
+        "net_final_10000": 129352.12527000005,
+        "win_rate": 0.72,
+        "avg_return": 0.05921784448104631,
+        "avg_annual_return": 0.2504510904100601,
+        "positive_year_rate": 0.8461538461538461,
+        "max_drawdown": -0.15973409512267256
+      },
+      "baseline_holdout": {
+        "trades": 21,
+        "gross_final_1000": 1895.9183788065368,
+        "net_final_10000": 18616.02119,
+        "win_rate": 0.6190476190476191,
+        "avg_return": 0.03478979066957151,
+        "avg_annual_return": 0.2687562976501043,
+        "positive_year_rate": 0.6666666666666666,
+        "max_drawdown": -0.12895377128953778
+      },
+      "winner_holdout": {
+        "trades": 21,
+        "gross_final_1000": 2402.482038041275,
+        "net_final_10000": 23596.56308000001,
+        "win_rate": 0.6190476190476191,
+        "avg_return": 0.04858685082250758,
+        "avg_annual_return": 0.3942147467323407,
+        "positive_year_rate": 0.6666666666666666,
+        "max_drawdown": -0.12895377128953767
+      },
+      "stable_evidence_floors_improved": 7,
+      "promoted": true
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-08-11",
+  "status": "formal_candidate",
+  "name": "D_formal_CSD_v2_exit_guard",
+  "entry_selector": "all_priority_bias_min3",
+  "exit_selector": "conservative_tp_center15_profit_first",
+  "main_rule": "Keep C/S/D entries, add strict rolling exit guard",
+  "execution_summary": {
+    "entry": "Use original C/S/D selected entry date and close-price execution path from the strict rolling v2 selector",
+    "exit": "If take-profit is triggered, sell at the selected close execution date; otherwise use the original exit",
+    "typical_exit_rule": "tp15%_all_next_close"
+  },
+  "strict_rolling": true,
+  "formal_metrics": {
+    "trades": 1513,
+    "active_rate": 1.0,
+    "win_rate": 0.6159947124917383,
+    "avg_trade_return": 0.037319459130032956,
+    "sum_return": 56.46434166373986,
+    "profit_factor": 3.051837955505565,
+    "annual_avg_sum": 7.058042707967482,
+    "worst_year_sum": 0.9376092296803631
+  },
+  "rejected_overlay": {
+    "name": "strict_rolling_extra_overlay",
+    "reason": "Higher win rate but lower trigger rate and lower total return",
+    "active_rate": 0.8585591539986781,
+    "win_rate": 0.6320246343341031,
+    "sum_return": 50.08898907963131
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "name": "C3-CS 双引擎严格滚动组合",
+  "status": "research_not_promoted_after_clean_retrain",
+  "version": "C3-CS-20260730",
+  "single_position": true,
+  "signal_engines": {
+    "main": "C",
+    "fallback_candidates": [
+      "C",
+      "S"
+    ],
+    "independent_virtual_state": true
+  },
+  "selection": {
+    "main_priority": true,
+    "fallback_method": "positive_all",
+    "fallback_score": "mean_return + 0.10 * (win_rate - 0.50) - 0.25 * downside_rms",
+    "minimum_closed_history": 3,
+    "require_positive_historical_mean": true,
+    "history_cutoff": "exit_date_strictly_before_candidate_entry"
+  },
+  "execution": {
+    "signal_confirmed": "trading_day_close",
+    "entry": "next_trading_day_close",
+    "fallback_natural_exit": "entry_plus_frozen_hold_days_close",
+    "main_preemption": "fallback_sell_and_main_buy_at_incoming_main_entry_close",
+    "commission_rate": 0.0003,
+    "minimum_commission": 5.0,
+    "lot_size": 100
+  },
+  "validation": {
+    "generated_at": "2026-08-01 11:41:38",
+    "candidate": "C improved main + C/S causal fallback union",
+    "execution": "decision at close, entry at next close; a preempted fallback sells at the incoming main entry close before the main buy",
+    "checks": {
+      "s_virtual_engine_exact_replay": true,
+      "annual_selector_uses_past_only": true,
+      "annual_selector_frozen_mode_is_positive_all": false,
+      "all_execution_exits_corrected": true,
+      "no_overlapping_positions": true,
+      "same_close_switches_are_explicit": true,
+      "all_years_profitable": false,
+      "all_sample_profit_gain_at_least_25pct": false,
+      "holdout_profit_gain_at_least_5pct": false,
+      "all_sample_win_not_below_weaker_baseline": true,
+      "holdout_win_at_least_75pct": false,
+      "drawdown_not_worse_than_c_by_2pct": true,
+      "holdout_has_at_least_10_trades": true,
+      "all_leave_one_year_out_beats_both": false
+    },
+    "passed": false,
+    "c_corrected": {
+      "trades": 46,
+      "final_1000": 19842.25954447204,
+      "win_rate": 0.7608695652173914,
+      "max_drawdown": -0.1400955833677986,
+      "losing_years": 1
+    },
+    "s_corrected": {
+      "trades": 50,
+      "final_1000": 10468.126287300329,
+      "win_rate": 0.7,
+      "max_drawdown": -0.15973409512267267,
+      "losing_years": 3
+    },
+    "candidate_corrected": {
+      "trades": 48,
+      "final_1000": 14897.193711990394,
+      "win_rate": 0.7291666666666666,
+      "max_drawdown": -0.14009558336779837,
+      "losing_years": 2
+    },
+    "c_holdout": {
+      "trades": 10,
+      "final_1000": 1963.756909312958,
+      "win_rate": 0.7,
+      "max_drawdown": -0.038466495699449266,
+      "losing_years": 0
+    },
+    "s_holdout": {
+      "trades": 21,
+      "final_1000": 1895.9183788065368,
+      "win_rate": 0.6190476190476191,
+      "max_drawdown": -0.12895377128953778,
+      "losing_years": 1
+    },
+    "candidate_holdout": {
+      "trades": 14,
+      "final_1000": 1807.451643914218,
+      "win_rate": 0.6428571428571429,
+      "max_drawdown": -0.12296983758700675,
+      "losing_years": 1
+    },
+    "candidate_net_10000": {
+      "initial_cash": 10000.0,
+      "final_cash": 144874.58713000003,
+      "net_profit": 134874.58713000003,
+      "executed_trades": 48
+    },
+    "c_net_10000": {
+      "initial_cash": 10000.0,
+      "final_cash": 193722.57168999998,
+      "net_profit": 183722.57168999998,
+      "executed_trades": 46
+    },
+    "s_net_10000": {
+      "initial_cash": 10000.0,
+      "final_cash": 100577.43728000003,
+      "net_profit": 90577.43728000003,
+      "executed_trades": 50
+    },
+    "minimum_leave_one_year_out_gain": -0.2501192836612388,
+    "same_close_switches": 10
+  },
+  "governance": {
+    "formal_from": "2026-07-30",
+    "historical_status": "strict rolling replay and formal audit",
+    "future_status": "forward observation required",
+    "do_not_reoptimize_from_single_trade": true
+  }
+}

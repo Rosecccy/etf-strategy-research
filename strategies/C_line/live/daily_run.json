@@ -1,0 +1,27 @@
+{
+  "steps": [
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/update_data.py",
+      "skipped": true,
+      "returncode": 0
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/extrema_live.py",
+      "returncode": 0,
+      "stdout": "{\n  \"generated_at\": \"2026-08-11 15:11:28\",\n  \"latest_data_date\": \"2026-08-11\",\n  \"model_year\": 2026,\n  \"train_cutoff_exclusive\": \"2026-01-01\",\n  \"train_rows\": 6880,\n  \"train_highs\": 854,\n  \"confirmation_delay_days\": 5,\n  \"threshold_window_years\": 5,\n  \"threshold\": 0.0325145936415612,\n  \"model_signature\": \"8f1034bad3df17a1\",\n  \"candidate_count\": 778,\n  \"signal_count\": 140,\n  \"latest_signal_date\": \"2026-08-10\",\n  \"reference_score_max_abs_error\": null,\n  \"causal_guarantee\": \"Only labels known before the model year are used for fitting; live labels are never read.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/live_signal.py",
+      "returncode": 0,
+      "stdout": "{\n  \"data_date\": \"2026-08-11\",\n  \"latest_data_date\": \"2026-08-11\",\n  \"run_date\": \"2026-08-11\",\n  \"data_lag_days\": 0,\n  \"latest_data_lag_days\": 0,\n  \"stale_symbol_count\": 0,\n  \"active_strategy_categories\": 8,\n  \"missing_rule_categories\": 1,\n  \"buy_signal_count\": 0,\n  \"holding_rows\": 0,\n  \"fallback_enabled\": true,\n  \"fallback_reason\": \"\\u672a\\u542f\\u7528\\u989d\\u5916 guard\\uff0c\\u6309\\u51bb\\u7ed3\\u5e74\\u5ea6\\u9009\\u62e9\\u6267\\u884c\",\n  \"live_profile\": \"calendar_oos_profit_c23_extrema\",\n  \"extrema_exit_profile\": \"rolling_high_absence_5y_m1\",\n  \"decision_file\": \"07_live/today_decision.csv\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "cmd": "C:\\Users\\10619\\Desktop\\gsqh\\.venv\\Scripts\\python.exe C/src/account.py reconcile",
+      "returncode": 0,
+      "stdout": "{\n  \"updated_at\": \"2026-08-11 15:11:32\",\n  \"cash\": null,\n  \"position_count\": 0,\n  \"market_value\": 0.0,\n  \"total_equity\": 0.0\n}\n",
+      "stderr": ""
+    }
+  ]
+}

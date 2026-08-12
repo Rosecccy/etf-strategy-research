@@ -1,0 +1,247 @@
+<div id="ma120-trade-points">
+  <div class="viz-controls" aria-label="买卖点筛选">
+    <label class="form-label">年份
+      <select class="form-select" data-year aria-label="选择年份"></select>
+    </label>
+    <label class="form-label">ETF
+      <select class="form-select" data-symbol aria-label="选择ETF"></select>
+    </label>
+    <span class="viz-badge" data-summary></span>
+  </div>
+
+  <div class="viz-grid" aria-label="当前图表摘要">
+    <div class="card viz-stat"><span class="text-muted">年度交易批次</span><strong class="viz-stat-value" data-stat="trades"></strong></div>
+    <div class="card viz-stat"><span class="text-muted">年度买点</span><strong class="viz-stat-value" data-stat="buys"></strong></div>
+    <div class="card viz-stat"><span class="text-muted">年度卖点</span><strong class="viz-stat-value" data-stat="sells"></strong></div>
+  </div>
+
+  <section aria-labelledby="ma120-chart-title">
+    <h3 id="ma120-chart-title" data-chart-title></h3>
+    <div class="ma120-chart-wrap">
+      <svg class="ma120-chart" viewBox="0 0 900 440" role="img" aria-labelledby="ma120-svg-title ma120-svg-desc">
+        <title id="ma120-svg-title">ETF 年度真实收盘价与策略买卖点</title>
+        <desc id="ma120-svg-desc">绿色线为年度真实收盘价，红色圆点是买点，蓝色方点是卖点。移动鼠标可查看每日日期和价格。</desc>
+        <g data-grid></g>
+        <path data-price-path fill="none"></path>
+        <g data-buy-points></g>
+        <g data-sell-points></g>
+        <g data-axes></g>
+      </svg>
+      <div class="tooltip ma120-tooltip" data-tooltip-box hidden></div>
+    </div>
+    <p class="text-small text-muted" data-hover-detail>移动鼠标到曲线上查看日期、收盘价和当日买卖点。</p>
+    <div class="viz-row text-small" aria-label="图例">
+      <span><i class="ma120-swatch ma120-price" aria-hidden="true"></i>真实收盘价</span>
+      <span><i class="ma120-swatch ma120-buy" aria-hidden="true"></i>买点（红）</span>
+      <span><i class="ma120-swatch ma120-sell" aria-hidden="true"></i>卖点（蓝）</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="ma120-trade-table-title">
+    <h3 id="ma120-trade-table-title">相关交易</h3>
+    <table class="ma120-table">
+      <thead><tr><th>状态</th><th>买入日</th><th>买入价</th><th>卖出日</th><th>卖出价</th><th>收益率</th></tr></thead>
+      <tbody data-trade-body></tbody>
+    </table>
+  </section>
+</div>
+
+<style>
+  #ma120-trade-points { color: var(--foreground); }
+  #ma120-trade-points section { margin-top: 1.1rem; }
+  .ma120-chart-wrap { position: relative; width: 100%; }
+  .ma120-chart { display: block; width: 100%; height: auto; overflow: visible; }
+  .ma120-chart [data-grid] line { stroke: var(--border); stroke-width: 1; }
+  .ma120-chart [data-axes] text { fill: var(--muted-foreground); font-size: 15px; }
+  .ma120-chart [data-axes] path { stroke: var(--muted-foreground); stroke-width: 1; fill: none; }
+  .ma120-chart [data-price-path] { stroke: var(--viz-series-1); stroke-width: 2.5; }
+  .ma120-chart [data-buy-points] circle { fill: var(--destructive); stroke: var(--card); stroke-width: 2; }
+  .ma120-chart [data-sell-points] rect { fill: var(--viz-series-2); stroke: var(--card); stroke-width: 2; }
+  .ma120-tooltip { position: absolute; max-width: 17rem; pointer-events: none; z-index: 2; }
+  .ma120-swatch { display: inline-block; width: .8rem; height: .8rem; margin-right: .3rem; vertical-align: -0.08rem; }
+  .ma120-price { border-radius: 50%; background: var(--viz-series-1); }
+  .ma120-buy { border-radius: 50%; background: var(--destructive); }
+  .ma120-sell { background: var(--viz-series-2); }
+  .ma120-table { width: 100%; border-collapse: collapse; }
+  .ma120-table th, .ma120-table td { padding: .55rem .35rem; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+  .ma120-table th { color: var(--muted-foreground); font-weight: 500; }
+  .ma120-profit { color: var(--destructive); }
+  .ma120-loss { color: var(--viz-series-2); }
+  @media (max-width: 480px) {
+    .ma120-table { font-size: .82em; }
+    .ma120-table th, .ma120-table td { padding: .4rem .2rem; }
+  }
+</style>
+
+<script>
+(() => {
+  const DATA = __DATA__;
+  const root = document.getElementById('ma120-trade-points');
+  const yearSelect = root.querySelector('[data-year]');
+  const symbolSelect = root.querySelector('[data-symbol]');
+  const summary = root.querySelector('[data-summary]');
+  const chartTitle = root.querySelector('[data-chart-title]');
+  const svg = root.querySelector('.ma120-chart');
+  const grid = root.querySelector('[data-grid]');
+  const axes = root.querySelector('[data-axes]');
+  const pricePath = root.querySelector('[data-price-path]');
+  const buyPoints = root.querySelector('[data-buy-points]');
+  const sellPoints = root.querySelector('[data-sell-points]');
+  const tooltip = root.querySelector('[data-tooltip-box]');
+  const hoverDetail = root.querySelector('[data-hover-detail]');
+  const tradeBody = root.querySelector('[data-trade-body]');
+  const stats = {
+    trades: root.querySelector('[data-stat="trades"]'),
+    buys: root.querySelector('[data-stat="buys"]'),
+    sells: root.querySelector('[data-stat="sells"]'),
+  };
+  const NS = 'http://www.w3.org/2000/svg';
+  const box = { width: 900, height: 440, left: 72, right: 28, top: 28, bottom: 62 };
+  let current = null;
+
+  function text(node, value) { node.textContent = value; return node; }
+  function svgEl(name, attrs = {}) {
+    const node = document.createElementNS(NS, name);
+    Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+    return node;
+  }
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+  function price(value) { return Number(value).toFixed(3); }
+  function percent(value) {
+    if (value === null || value === undefined || Number.isNaN(Number(value))) return '-';
+    return `${Number(value) >= 0 ? '+' : ''}${(Number(value) * 100).toFixed(2)}%`;
+  }
+  function dateLabel(value) { return value.slice(5); }
+  function eventMap(events) {
+    return events.reduce((map, item) => {
+      const list = map.get(item.date) || [];
+      list.push(item);
+      map.set(item.date, list);
+      return map;
+    }, new Map());
+  }
+  function populateYears() {
+    DATA.years.forEach(year => {
+      const option = document.createElement('option');
+      option.value = year;
+      option.textContent = `${year} 年`;
+      yearSelect.appendChild(option);
+    });
+    yearSelect.value = DATA.years[0];
+  }
+  function populateSymbols(year, selected) {
+    clear(symbolSelect);
+    const items = Object.values(DATA.byYear[year]);
+    items.sort((a, b) => a.symbol.localeCompare(b.symbol, 'zh-Hans-CN'));
+    items.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.symbol;
+      option.textContent = `${item.symbol} ${item.name}`;
+      symbolSelect.appendChild(option);
+    });
+    symbolSelect.value = selected && DATA.byYear[year][selected] ? selected : items[0].symbol;
+  }
+  function setStats(item) {
+    const related = item.trades;
+    stats.trades.textContent = String(related.length);
+    stats.buys.textContent = String(item.buys.length);
+    stats.sells.textContent = String(item.sells.length);
+    summary.textContent = `${item.symbol} ${item.name}`;
+  }
+  function draw(item) {
+    const points = item.prices;
+    const xs = points.map((_, index) => index);
+    const values = points.map(point => point.close);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const padding = Math.max((max - min) * 0.08, max * 0.01);
+    const lower = min - padding;
+    const upper = max + padding;
+    const plotWidth = box.width - box.left - box.right;
+    const plotHeight = box.height - box.top - box.bottom;
+    const x = index => box.left + (index / Math.max(points.length - 1, 1)) * plotWidth;
+    const y = value => box.top + (upper - value) / Math.max(upper - lower, 0.000001) * plotHeight;
+    const byDate = new Map(points.map((point, index) => [point.date, index]));
+    current = { item, points, x, y, byDate };
+    clear(grid); clear(axes); clear(buyPoints); clear(sellPoints);
+    const path = points.map((point, index) => `${index ? 'L' : 'M'}${x(index).toFixed(2)},${y(point.close).toFixed(2)}`).join(' ');
+    pricePath.setAttribute('d', path);
+    for (let tick = 0; tick <= 4; tick += 1) {
+      const value = lower + (upper - lower) * (tick / 4);
+      const yy = y(value);
+      grid.appendChild(svgEl('line', { x1: box.left, y1: yy, x2: box.width - box.right, y2: yy }));
+      const label = svgEl('text', { x: box.left - 10, y: yy + 5, 'text-anchor': 'end' });
+      text(label, price(value)); axes.appendChild(label);
+    }
+    for (let tick = 0; tick <= 4; tick += 1) {
+      const index = Math.round((points.length - 1) * (tick / 4));
+      const xx = x(index);
+      grid.appendChild(svgEl('line', { x1: xx, y1: box.top, x2: xx, y2: box.height - box.bottom }));
+      const label = svgEl('text', { x: xx, y: box.height - box.bottom + 24, 'text-anchor': 'middle' });
+      text(label, dateLabel(points[index].date)); axes.appendChild(label);
+    }
+    axes.appendChild(svgEl('path', { d: `M${box.left},${box.top}V${box.height - box.bottom}H${box.width - box.right}` }));
+    item.buys.forEach(event => {
+      const index = byDate.get(event.date);
+      if (index === undefined) return;
+      buyPoints.appendChild(svgEl('circle', { cx: x(index), cy: y(event.price), r: 6 }));
+    });
+    item.sells.forEach(event => {
+      const index = byDate.get(event.date);
+      if (index === undefined) return;
+      sellPoints.appendChild(svgEl('rect', { x: x(index) - 5, y: y(event.price) - 5, width: 10, height: 10, rx: 1 }));
+    });
+  }
+  function renderTable(item) {
+    clear(tradeBody);
+    const rows = item.trades.slice().sort((a, b) => a.entry_date.localeCompare(b.entry_date));
+    rows.forEach(trade => {
+      const row = document.createElement('tr');
+      const status = trade.status === 'open' ? '持仓中' : '已卖出';
+      const rate = percent(trade.return_rate);
+      const rateClass = Number(trade.return_rate) >= 0 ? 'ma120-profit' : 'ma120-loss';
+      row.innerHTML = `<td>${status}</td><td>${trade.entry_date}</td><td>${price(trade.entry_close)}</td><td>${trade.exit_date || '-'}</td><td>${trade.exit_close === null ? '-' : price(trade.exit_close)}</td><td class="${rateClass}">${rate}</td>`;
+      tradeBody.appendChild(row);
+    });
+  }
+  function render() {
+    const year = yearSelect.value;
+    const symbol = symbolSelect.value;
+    const item = DATA.byYear[year][symbol];
+    chartTitle.textContent = `${year} 年 · ${item.symbol} ${item.name}`;
+    setStats(item); draw(item); renderTable(item);
+    hoverDetail.textContent = '移动鼠标到曲线上查看日期、收盘价和当日买卖点。';
+    tooltip.hidden = true;
+  }
+  function showHover(event) {
+    if (!current) return;
+    const rect = svg.getBoundingClientRect();
+    const localX = (event.clientX - rect.left) / rect.width * box.width;
+    const relative = (localX - box.left) / (box.width - box.left - box.right);
+    const index = Math.max(0, Math.min(current.points.length - 1, Math.round(relative * (current.points.length - 1))));
+    const point = current.points[index];
+    const buys = eventMap(current.item.buys).get(point.date) || [];
+    const sells = eventMap(current.item.sells).get(point.date) || [];
+    const notes = [
+      `<strong>${point.date}</strong>`,
+      `收盘价 ${price(point.close)}`,
+      buys.length ? `买点 ${buys.length} 笔` : '',
+      sells.length ? `卖点 ${sells.length} 笔` : '',
+    ].filter(Boolean);
+    tooltip.innerHTML = notes.join('<br>');
+    tooltip.hidden = false;
+    const left = Math.max(8, Math.min(event.clientX - rect.left + 14, rect.width - 190));
+    const top = Math.max(8, Math.min(event.clientY - rect.top - 8, rect.height - 96));
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+    hoverDetail.textContent = `${point.date}，收盘价 ${price(point.close)}${buys.length ? `，买点 ${buys.length} 笔` : ''}${sells.length ? `，卖点 ${sells.length} 笔` : ''}`;
+  }
+  yearSelect.addEventListener('change', () => { populateSymbols(yearSelect.value); render(); });
+  symbolSelect.addEventListener('change', render);
+  svg.addEventListener('mousemove', showHover);
+  svg.addEventListener('mouseleave', () => { tooltip.hidden = true; });
+  populateYears();
+  populateSymbols(yearSelect.value);
+  render();
+})();
+</script>

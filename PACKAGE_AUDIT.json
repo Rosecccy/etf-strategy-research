@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-08-12 09:36:50",
+  "package": "four_strategy_private_repo_20260812_093650",
+  "source_root": "C:\\Users\\10619\\Desktop\\gsqh",
+  "copied_files": 549,
+  "omitted": [
+    {
+      "path": "C\\raw\\etf\\159813.csv.bak_20260805_151626",
+      "reason": "excluded_by_name_or_suffix"
+    },
+    {
+      "path": "C\\live\\scheduled_run.log",
+      "reason": "excluded_by_name_or_suffix"
+    },
+    {
+      "path": "C\\live\\system\\daily.log",
+      "reason": "excluded_by_name_or_suffix"
+    },
+    {
+      "path": "S\\raw\\etf\\512690.csv",
+      "reason": "excluded_by_name_or_suffix"
+    },
+    {
+      "path": "C\\raw\\etf\\159813.csv.bak_20260805_151626",
+      "reason": "excluded_by_name_or_suffix"
+    },
+    {
+      "path": "D\\out\\csd_v2_exit_guard\\exit_candidate_panel.csv",
+      "reason": "excluded_by_name_or_suffix"
+    },
+    {
+      "path": "C\\raw\\etf\\159813.csv.bak_20260805_151626",
+      "reason": "excluded_by_name_or_suffix"
+    }
+  ],
+  "strategy_data_counts": {
+    "C_line": 30,
+    "S_line": 61,
+    "D_line": 30,
+    "V_line": 30
+  },
+  "manifest_files": 550
+}

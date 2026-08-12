@@ -1,0 +1,2 @@
+﻿generated_at,model,version,asof_date,action,symbol,display_name,source,planned_entry_date,planned_hold_days,selection_score,reason,account_mode,actual_account_confirmed,account_warning,runtime_data_quality,historical_performance_clean_recheck
+2026-08-01 10:17:14,C3-CS 双引擎严格滚动组合,C3-CS-20260730,2026-07-31,next_trade_close_buy,510880,红利ETF,fallback_buy,2026-08-03,10,0.01702992804082187,补偿候选按冻结历史分数择优，选择 C 引擎,paper_model,False,当前为模型账户；真实持仓与成交需人工确认后才能作为账户指令。,passed,pending

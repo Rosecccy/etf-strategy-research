@@ -1,0 +1,4 @@
+﻿symbol,name,overlay,entry_date,entry_close,exit_date,exit_close,quantity,buy_fee,cost_total,actual_exit_date,actual_exit_close,sell_fee,net_return,net_pnl,status_portfolio
+512660,军工ETF,enhanced_ge_40,2025-01-08,0.965,2025-02-21,1.043,10300,5.0,9944.5,2025-02-21,1.043,5.0,0.07978279450952784,793.3999999999996,closed
+159887,银行ETF,enhanced_ge_40,2025-08-21,1.391,2025-11-11,1.371,7700,5.0,10715.7,2025-11-11,1.371,5.0,-0.015304646453334826,-164.0,closed
+159611,电力ETF,enhanced_ge_40,2026-01-15,1.03,2026-06-04,1.228,10300,5.0,10614.0,2026-06-04,1.228,5.0,0.19120030148859993,2029.3999999999996,closed

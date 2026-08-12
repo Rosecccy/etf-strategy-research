@@ -1,0 +1,10 @@
+{
+  "date": "2026-07-31",
+  "fear_core": 64.45578231292517,
+  "fear_qvix": null,
+  "fear_enhanced": 64.45578231292517,
+  "greed_enhanced": 35.544217687074834,
+  "regime": "恐惧",
+  "active_overlay": "core_ge_40",
+  "note": "情绪层只决定是否放行技术买点；没有技术买点时不会单独买入。"
+}

@@ -1,0 +1,51 @@
+{
+  "name": "C2 ETF pipeline v0",
+  "universe": {
+    "source": "C/raw/pool.csv",
+    "etf_dir": "C/raw/etf",
+    "count": 30
+  },
+  "data": {
+    "price_adjustment": "use_input_adjusted_close_if_provided",
+    "drop_zero_close": true,
+    "drop_zero_volume": false,
+    "max_abs_daily_return_warn": 0.12
+  },
+  "frequencies": ["D", "W", "B15", "M"],
+  "indicators": ["KDJ_K", "KDJ_D", "KDJ_J", "KD", "RSI", "DIF", "EMV", "LON", "VOL"],
+  "signal": {
+    "rolling_window": 120,
+    "rank_mode": ["range"],
+    "low_threshold": [0.2, 0.25],
+    "high_threshold": [0.8, 0.75],
+    "min_periods": [20],
+    "state_mode": "carry_to_daily_after_bar_close"
+  },
+  "strategy_grid": {
+    "combo_sizes": [1, 2],
+    "condition": "all_factors_low",
+    "hold_days": [5, 20, 40, 60],
+    "entry": "signal_day_close_confirm_next_trade_day_close_buy",
+    "exit": "entry_day_plus_hold_days_close_sell",
+    "fee": 0.0,
+    "min_trades_for_ranking": 30
+  },
+  "search": {
+    "calibers": [
+      {
+        "caliber": "mainstream",
+        "kdj": "tdx",
+        "rsi": "tdx",
+        "emv": "tdx",
+        "lon": "tdx"
+      },
+      {
+        "caliber": "profit_probe",
+        "kdj": "ema",
+        "rsi": "rolling",
+        "emv": "rolling",
+        "lon": "ewm"
+      }
+    ]
+  }
+}

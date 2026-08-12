@@ -1,0 +1,10 @@
+pandas
+numpy
+scikit-learn
+requests
+akshare
+plotly
+streamlit
+joblib
+pyarrow
+openpyxl
