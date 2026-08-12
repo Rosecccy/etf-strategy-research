@@ -27,3 +27,21 @@ python scripts/verify_package.py
 ## 关于被排除的大文件
 
 GitHub 普通仓库单文件上限约 100MB。本包故意不放超大中间候选缓存表，例如完整候选面板。正式结果复核所需的原始干净数据、配置、代码和最终交易明细已保留；若要重新跑全量搜索，可用 `src/` 脚本从原始 ETF 数据再生成中间表。
+
+
+## 离线运行检查
+
+这个仓库现在同时保留两套结构：
+
+- `strategies/C_line`、`strategies/S_line`、`strategies/D_line`、`strategies/V_line`：给人阅读和复核的精简结构。
+- `C`、`S`、`D`、`V`：给旧脚本直接运行的兼容结构，路径名与原工程一致。
+
+同学拿到仓库后，先在仓库根目录运行：
+
+```bash
+python scripts/verify_package.py
+python scripts/verify_runnable.py
+python run_all_strategies.py
+```
+
+其中 `verify_runnable.py` 会在不依赖旧电脑目录的情况下读取本仓库内的数据、配置和结果，确认能独立跑出四条策略的当前摘要。

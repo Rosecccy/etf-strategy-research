@@ -2,6 +2,14 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
+
+# Generated local runtime folders. Rebuild with:
+# python scripts/make_repo_runnable.py
+/C/
+/S/
+/D/
+/V/
+.DS_Store
 *.zip
 *.bak
 *.tmp
