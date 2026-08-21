@@ -1,47 +1,46 @@
 # ETF Strategy Research
 
-本仓库的当前正式基线已更新为 **2026-08-21 audited 14:45 release V2**。
+本仓库的当前正式基线为 **2026-08-21 audited 14:45 release V2**。
 
 为避免把数百 MB 的重复行情、Parquet 特征面板和模型二进制继续堆进 Git，仓库采用两层结构：
 
-- `same_day_1445/release_v2/`：**当前正式基线**，后续所有优化都从这里比较。
-- `strategies/`：历史可运行策略底座和数据，保留用于兼容、复核与重建，不再代表当前最终表现。
+- `same_day_1445/release_v2/`：**当前冻结基线**，后续所有优化都从这里比较。
+- `strategies/`：历史兼容代码与数据底座，用于复核旧版本，不再代表当前最终表现。
 
 ## 当前正式结果
 
-| 策略线 | 最终资金 | 交易数 | 胜率 | 平均单笔收益 | 最大回撤 | 2024+ Holdout 胜率 |
+| 策略线 | 最终资金 | 交易数 | 胜率 | 平均单笔收益 | 最大回撤 | 2024+ 审计胜率 |
 |---|---:|---:|---:|---:|---:|---:|
 | C | 209,530.06 | 38 | 78.95% | 8.93% | -13.68% | 88.89% |
 | S | 149,989.34 | 44 | 77.27% | 6.81% | -12.70% | 81.25% |
 | D | 656,342.50 | 1303 | 66.46% | 4.96% | -18.57% | 67.86% |
 | R | 232,901.11 | 44 | 77.27% | 7.96% | -13.68% | 78.57% |
 
-上述结果来自 `same_day_1445/release_v2/selected_summary.csv`。
+上述数值来自 `same_day_1445/release_v2/selected_summary.csv`。2024+ 已被多次查看，因此这里只称为后段审计窗口，不称为全新未见测试。
 
-## 先运行什么
+## GitHub 内可直接验证
 
 ```bash
 python -m pip install -r requirements.txt
 python scripts/verify_current_baseline.py
 ```
 
-若要复核完整 14:45 发布逻辑：
+`verify_current_baseline.py` 只依赖本仓库已经提交的冻结结果，检查 C/S/D/R 是否齐全、1429 笔正式交易的审计计数是否一致、年度选择是否保持因果，以及 `audit.json` 是否通过。
 
-```bash
-python scripts/audit_1445_release_v2.py
-python scripts/audit_three_ledgers.py
-```
+## 完整重建边界
 
-GitHub 轻量版不重复提交完整 1429 笔 V2 交易大表：C/S/R 的 126 笔交易保留在 `selected_trades_csr.csv`，D 线保留逐年聚合；完整账本在原始审计包中，并可由发布脚本重建。部分深度复跑需要完整归档中的原始行情或派生特征文件。省略数据的原则和恢复方式见 `docs/DATA_RECONSTRUCTION.md`。
+GitHub 轻量版不重复提交完整 1429 笔 V2 交易大表和数百 MB 的原始/派生研究工件：C/S/R 的 126 笔交易保留在 `selected_trades_csr.csv`，D 线保留逐年聚合。完整重跑 14:45 搜索、发布和三账本审计时，需要先从 **2026-08-21 原始审计压缩包**恢复 C/S/D/R 正式账本、原始行情、Parquet 特征面板和相关脚本，然后再执行压缩包内的深度审计流程。
+
+因此，本仓库不会提供一个实际上缺少输入数据却声称能够完整重建的命令。省略数据及恢复原则见 `docs/DATA_RECONSTRUCTION.md`。
 
 ## 后续优化规则
 
-后续实验必须以 `same_day_1445/release_v2` 为冻结基线，遵守 `docs/OPTIMIZATION_PROTOCOL.md`：
+后续实验必须以 `same_day_1445/release_v2` 为冻结基线，并遵守 `docs/OPTIMIZATION_PROTOCOL.md`：
 
 1. 测试年份只能由更早年份选择参数、阈值、模型和路由；
 2. 同时报告胜率、收益、最大回撤、交易频率、持仓/空仓时间；
 3. 不允许用未来高低点作为当日输入；
-4. 2024+ Holdout 已被多次查看，不再称为“全新未见测试”；
+4. 2024+ 后段审计窗口不得重新包装为 pristine holdout；
 5. 159663 的已知价格口径断层继续保留，并在相关结果中单独标记。
 
 本仓库仅用于研究，不构成投资建议。
