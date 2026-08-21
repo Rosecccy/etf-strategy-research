@@ -1,0 +1,12 @@
+{
+  "version": "2026-08-21-release-v2",
+  "canonical_path": "same_day_1445/release_v2",
+  "status": "frozen_baseline",
+  "metrics": {
+    "C": {"final_equity": 209530.06,"trades": 38,"win_rate": 0.7895,"avg_trade_return": 0.0893,"max_drawdown": -0.1368,"holdout_2024_win_rate": 0.8889},
+    "S": {"final_equity": 149989.34,"trades": 44,"win_rate": 0.7727,"avg_trade_return": 0.0681,"max_drawdown": -0.127,"holdout_2024_win_rate": 0.8125},
+    "D": {"final_equity": 656342.5,"trades": 1303,"win_rate": 0.6646,"avg_trade_return": 0.0496,"max_drawdown": -0.1857,"holdout_2024_win_rate": 0.6786},
+    "R": {"final_equity": 232901.11,"trades": 44,"win_rate": 0.7727,"avg_trade_return": 0.0796,"max_drawdown": -0.1368,"holdout_2024_win_rate": 0.7857}
+  },
+  "notes": ["2024+ has been inspected repeatedly and is an audit window, not pristine holdout","159663 known price-basis discontinuity retained by research convention"]
+}
