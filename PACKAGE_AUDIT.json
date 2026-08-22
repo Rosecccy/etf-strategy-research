@@ -1,43 +1,56 @@
 {
-  "generated_at": "2026-08-12 09:36:50",
-  "package": "four_strategy_private_repo_20260812_093650",
-  "source_root": "C:\\Users\\10619\\Desktop\\gsqh",
-  "copied_files": 549,
-  "omitted": [
-    {
-      "path": "C\\raw\\etf\\159813.csv.bak_20260805_151626",
-      "reason": "excluded_by_name_or_suffix"
-    },
-    {
-      "path": "C\\live\\scheduled_run.log",
-      "reason": "excluded_by_name_or_suffix"
-    },
-    {
-      "path": "C\\live\\system\\daily.log",
-      "reason": "excluded_by_name_or_suffix"
-    },
-    {
-      "path": "S\\raw\\etf\\512690.csv",
-      "reason": "excluded_by_name_or_suffix"
-    },
-    {
-      "path": "C\\raw\\etf\\159813.csv.bak_20260805_151626",
-      "reason": "excluded_by_name_or_suffix"
-    },
-    {
-      "path": "D\\out\\csd_v2_exit_guard\\exit_candidate_panel.csv",
-      "reason": "excluded_by_name_or_suffix"
-    },
-    {
-      "path": "C\\raw\\etf\\159813.csv.bak_20260805_151626",
-      "reason": "excluded_by_name_or_suffix"
-    }
+  "generated_at": "2026-08-22",
+  "package": "etf-strategy-research-github-audit-v2",
+  "source_archive": "etf_strategy_github_latest_20260821_115546",
+  "canonical_baseline": "same_day_1445/release_v2",
+  "canonical_lines": [
+    "C",
+    "S",
+    "D",
+    "R"
   ],
-  "strategy_data_counts": {
-    "C_line": 30,
-    "S_line": 61,
-    "D_line": 30,
-    "V_line": 30
+  "status": "frozen_baseline_with_internal_audit",
+  "trade_rows": {
+    "C": 38,
+    "S": 44,
+    "D": 1303,
+    "R": 44,
+    "total": 1429
   },
-  "manifest_files": 550
+  "accounting": {
+    "C": "single_position_compound",
+    "S": "single_position_compound",
+    "D": "research_sum",
+    "R": "single_position_compound",
+    "annual_year": "effective_entry_year",
+    "original_ledger_year": "source_year"
+  },
+  "manifest_scope": "canonical_v2_plus_audit_tooling_and_key_docs",
+  "manifest_excludes": [
+    "historical strategies tree except through explicit compatibility checks",
+    "large raw market archives",
+    "parquet feature panels",
+    "model binaries",
+    "regenerable candidate-search caches",
+    "full 1303-row D per-trade research ledger"
+  ],
+  "checks": {
+    "complete_selected_trade_ledger_committed": false,
+    "full_csr_trade_ledger_committed": true,
+    "d_annual_compact_committed": true,
+    "d_cross_year_boundary_evidence_committed": true,
+    "choice_training_year_evidence_committed": true,
+    "causal_year_window_checked": true,
+    "d_entry_year_consistency_checked": true,
+    "single_account_overlap_checked_for_C_S_R": true,
+    "csr_summary_recomputed_from_trade_ledger": true,
+    "d_aggregate_metrics_reconciled_to_yearly_choices": true,
+    "audit_json_cross_checked": true
+  },
+  "notes": [
+    "2024+ is an inspected audit window, not a pristine holdout",
+    "full raw-policy search still requires the archived 2026-08-21 research package",
+    "legacy strategies/C_line, S_line, D_line and V_line are compatibility material, not the current C/S/D/R baseline",
+    "D per-trade maximum-drawdown reconstruction remains a source-package-only check"
+  ]
 }

@@ -1,10 +1,15 @@
+"""Print summaries from the historical C/S/D/V compatibility runtime.
+
+This is not the verifier for the current C/S/D/R V2 baseline. Use
+`scripts/verify_current_baseline.py` for the current formal release.
+"""
+
 from __future__ import annotations
 
 import csv
 import json
 import sys
 from pathlib import Path
-
 
 ROOT = Path(__file__).resolve().parent
 if hasattr(sys.stdout, "reconfigure"):
@@ -14,20 +19,21 @@ if hasattr(sys.stdout, "reconfigure"):
 def read_json(path: Path) -> dict:
     if not path.exists():
         return {}
-    with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
+    with path.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
 
 
 def first_csv_row(path: Path) -> dict[str, str]:
     if not path.exists():
         return {}
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f)
-        return next(reader, {})
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        return next(csv.DictReader(handle), {})
 
 
 def line_summary() -> dict:
     return {
+        "scope": "legacy_C_S_D_V_compatibility_only",
+        "current_baseline_verifier": "scripts/verify_current_baseline.py",
         "C_line": {
             "today_decision": first_csv_row(ROOT / "C" / "live" / "today_decision.csv"),
             "summary": read_json(ROOT / "C" / "live" / "summary.json"),

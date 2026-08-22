@@ -1,10 +1,11 @@
+"""Smoke-test the historical C/S/D/V compatibility runtime only."""
+
 from __future__ import annotations
 
 import json
 import subprocess
 import sys
 from pathlib import Path
-
 
 ROOT = Path(__file__).resolve().parents[1]
 if hasattr(sys.stdout, "reconfigure"):
@@ -23,13 +24,10 @@ REQUIRED = [
 
 
 def main() -> int:
-    bootstrap = ROOT / "scripts" / "make_repo_runnable.py"
-    if bootstrap.exists():
-        subprocess.run([sys.executable, str(bootstrap)], cwd=ROOT, check=True)
-
-    missing = [str(p.relative_to(ROOT)) for p in REQUIRED if not p.exists()]
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "make_repo_runnable.py")], cwd=ROOT, check=True)
+    missing = [str(path.relative_to(ROOT)) for path in REQUIRED if not path.exists()]
     if missing:
-        print("PACKAGE NOT RUNNABLE")
+        print("LEGACY PACKAGE NOT RUNNABLE")
         print(json.dumps({"missing": missing}, ensure_ascii=False, indent=2))
         return 1
 
@@ -41,27 +39,26 @@ def main() -> int:
         capture_output=True,
     )
     if result.returncode != 0:
-        print("RUNNER FAILED")
+        print("LEGACY RUNNER FAILED")
         print(result.stdout)
         print(result.stderr)
         return result.returncode
 
-    print("PACKAGE RUNNABLE")
-    print(result.stdout)
-
     deep_checks = [
-        ["C", [sys.executable, str(ROOT / "C" / "src" / "run_daily.py"), "--skip-update"]],
-        ["S", [sys.executable, str(ROOT / "S" / "src" / "run_s1_live.py")]],
-        ["D", [sys.executable, str(ROOT / "D" / "src" / "daily_panic_live.py")]],
+        ("C", [sys.executable, str(ROOT / "C" / "src" / "run_daily.py"), "--skip-update"]),
+        ("S", [sys.executable, str(ROOT / "S" / "src" / "run_s1_live.py")]),
+        ("D", [sys.executable, str(ROOT / "D" / "src" / "daily_panic_live.py")]),
     ]
-    for name, cmd in deep_checks:
-        check = subprocess.run(cmd, cwd=ROOT, text=True, encoding="utf-8", capture_output=True)
+    for name, command in deep_checks:
+        check = subprocess.run(command, cwd=ROOT, text=True, encoding="utf-8", capture_output=True)
         if check.returncode != 0:
-            print(f"{name}_LINE_ENTRY_FAILED")
+            print(f"LEGACY {name}_LINE_ENTRY_FAILED")
             print(check.stdout)
             print(check.stderr)
             return check.returncode
-        print(f"{name}_LINE_ENTRY_OK")
+
+    print("LEGACY PACKAGE RUNNABLE")
+    print("This does not validate the current C/S/D/R V2 baseline.")
     return 0
 
 
