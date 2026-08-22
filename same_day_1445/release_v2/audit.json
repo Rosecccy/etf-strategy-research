@@ -1,10 +1,50 @@
 {
   "holdout_start": 2024,
   "lines": {
-    "C": {"trade_rows": 38,"missing_prices": 0,"bad_dates": 0,"duplicate_trade_keys": 0,"overlap_count": 0,"all_year_choices_are_causal": true},
-    "S": {"trade_rows": 44,"missing_prices": 0,"bad_dates": 0,"duplicate_trade_keys": 0,"overlap_count": 0,"all_year_choices_are_causal": true},
-    "D": {"trade_rows": 1303,"missing_prices": 0,"bad_dates": 0,"duplicate_trade_keys": 0,"overlap_count": null,"all_year_choices_are_causal": true},
-    "R": {"trade_rows": 44,"missing_prices": 0,"bad_dates": 0,"duplicate_trade_keys": 0,"overlap_count": 0,"all_year_choices_are_causal": true}
+    "C": {
+      "trade_rows": 38,
+      "missing_prices": 0,
+      "bad_dates": 0,
+      "duplicate_trade_keys": 0,
+      "year_entry_mismatch": 0,
+      "overlap_count": 0,
+      "all_year_choices_are_causal": true,
+      "causality_violations": [],
+      "causality_evidence_errors": []
+    },
+    "S": {
+      "trade_rows": 44,
+      "missing_prices": 0,
+      "bad_dates": 0,
+      "duplicate_trade_keys": 0,
+      "year_entry_mismatch": 0,
+      "overlap_count": 0,
+      "all_year_choices_are_causal": true,
+      "causality_violations": [],
+      "causality_evidence_errors": []
+    },
+    "D": {
+      "trade_rows": 1303,
+      "missing_prices": 0,
+      "bad_dates": 0,
+      "duplicate_trade_keys": 0,
+      "year_entry_mismatch": 0,
+      "overlap_count": null,
+      "all_year_choices_are_causal": true,
+      "causality_violations": [],
+      "causality_evidence_errors": []
+    },
+    "R": {
+      "trade_rows": 44,
+      "missing_prices": 0,
+      "bad_dates": 0,
+      "duplicate_trade_keys": 0,
+      "year_entry_mismatch": 0,
+      "overlap_count": 0,
+      "all_year_choices_are_causal": true,
+      "causality_violations": [],
+      "causality_evidence_errors": []
+    }
   },
   "ok": true
 }

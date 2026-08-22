@@ -8,5 +8,17 @@
     "D": {"final_equity": 656342.5,"trades": 1303,"win_rate": 0.6646,"avg_trade_return": 0.0496,"max_drawdown": -0.1857,"holdout_2024_win_rate": 0.6786},
     "R": {"final_equity": 232901.11,"trades": 44,"win_rate": 0.7727,"avg_trade_return": 0.0796,"max_drawdown": -0.1368,"holdout_2024_win_rate": 0.7857}
   },
-  "notes": ["2024+ has been inspected repeatedly and is an audit window, not pristine holdout","159663 known price-basis discontinuity retained by research convention"]
+  "accounting": {
+    "C": "single_position_compound",
+    "S": "single_position_compound",
+    "D": "research_sum",
+    "R": "single_position_compound",
+    "annual_year_field": "effective_entry_year",
+    "source_year_field": "source_year"
+  },
+  "notes": [
+    "2024+ has been inspected repeatedly and is an audit window, not pristine holdout",
+    "159663 known price-basis discontinuity retained by research convention",
+    "D annual statistics use effective entry year; source ledger year is retained separately"
+  ]
 }
