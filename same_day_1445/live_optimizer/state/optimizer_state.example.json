@@ -1,0 +1,7 @@
+{
+  "mode": "SHADOW_ONLY",
+  "active_formal": {"C": "release_v2", "S": "release_v2", "D": "release_v2", "R": "release_v2"},
+  "previous_formal": {"C": null, "S": null, "D": null, "R": null},
+  "shadow_leader": {"C": null, "S": null, "D": null, "R": null},
+  "last_promotion_at": {"C": null, "S": null, "D": null, "R": null}
+}
