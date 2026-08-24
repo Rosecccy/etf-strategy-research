@@ -1,0 +1,10 @@
+import json
+from pathlib import Path
+from same_day_1445.live_optimizer.engine.ledger import AppendOnlyCsvLedger
+from same_day_1445.live_optimizer.engine.orchestrator import run_optimizer
+
+def test_minimum_new_samples_counts_only_evidence_after_last_promotion(tmp_path: Path):
+    root=tmp_path/'opt';(root/'config').mkdir(parents=True);(root/'state').mkdir();(root/'ledger').mkdir();cfg={'mode':'SHADOW_ONLY','cooldown_days':0,'gates':{'trigger_retention_min':0.0,'win_rate_delta_min':-1.0,'mean_return_delta_min':-1.0,'max_drawdown_deterioration_max':1.0,'recent_windows_improve_fraction_min':0.0,'recent_window_win_rate_regression_max':1.0,'neighbor_pass_rate_min':0.0,'minimum_evaluation_windows':0},'drift':{'recent_count':20},'lines':{x:{'minimum_new_samples':(2 if x=='C' else 0),'minimum_regimes':0,'accounting':'research_sum' if x=='D' else 'compound'} for x in 'CSDR'},'candidate_spaces':{},'evaluation_windows':[]};(root/'config/optimizer.json').write_text(json.dumps(cfg),encoding='utf-8');(root/'state/optimizer_state.json').write_text(json.dumps({'mode':'SHADOW_ONLY','active_formal':{x:'release_v2' for x in 'CSDR'},'previous_formal':{x:None for x in 'CSDR'},'shadow_leader':{x:None for x in 'CSDR'},'last_promotion_at':{'C':'2026-08-20T16:00:00+08:00','S':None,'D':None,'R':None},'pending_promotion':{x:None for x in 'CSDR'}}),encoding='utf-8');led=AppendOnlyCsvLedger(root/'ledger/closed_trades.csv',('sample_id','candidate_id'));dates=['2026-08-18T15:00:00+08:00','2026-08-19T15:00:00+08:00','2026-08-21T15:00:00+08:00']
+    for i,obs in enumerate(dates,1):
+        common={'opportunity_id':f'o{i}','line':'C','decision_at':obs,'observable_at':obs,'entry_date':f'2026-08-{10+i:02d}','exit_date':f'2026-08-{11+i:02d}','triggered':1,'regime':'neutral'};led.append({'sample_id':f'b{i}','candidate_id':'release_v2','ret':0.01,**common});led.append({'sample_id':f'c{i}','candidate_id':'C_DELAY1','ret':0.02,**common})
+    gate=run_optimizer(root,'2026-08-24T16:00:00+08:00')['lines']['C']['candidates'][0]['gate'];assert gate['evidence']['new_samples']==1;assert 'MIN_NEW_SAMPLES' in gate['reasons']
