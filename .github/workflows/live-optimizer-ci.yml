@@ -8,6 +8,8 @@ on:
     paths:
       - 'same_day_1445/live_optimizer/**'
       - 'tests/test_live_optimizer_*.py'
+      - 'tests/test_v2_audit_consistency.py'
+      - 'scripts/verify_current_baseline.py'
       - '.github/workflows/live-optimizer-ci.yml'
 
 jobs:
@@ -24,8 +26,10 @@ jobs:
         run: python -m pip install -r requirements.txt pytest
       - name: Compile runtime
         run: python -m compileall -q same_day_1445/live_optimizer
-      - name: Run tests
-        run: python -m pytest -q
+      - name: Run repository tests
+        run: python -m pytest -q tests
+      - name: Verify frozen V2 baseline
+        run: python scripts/verify_current_baseline.py
       - name: Reject GPT/LLM runtime dependencies
         shell: python
         run: |
