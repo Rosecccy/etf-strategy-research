@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ETF Live Optimizer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Forward-only · 14:45</p>
+        <h1>ETF Live Optimizer</h1>
+        <p class="subtitle">C / S / D / R 正式策略、V2 锚点与影子候选的程序化监控</p>
+      </div>
+      <div id="modeBadge" class="mode">LOADING</div>
+    </header>
+    <section id="globalBanner" class="banner hidden"></section>
+    <section id="lineGrid" class="grid"></section>
+    <section class="panel">
+      <div class="panel-head"><h2>候选晋级与回滚状态</h2><span id="updatedAt"></span></div>
+      <div id="timeline" class="timeline"></div>
+    </section>
+    <footer>Dashboard is read-only. Trading and optimization logic run only in Python.</footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

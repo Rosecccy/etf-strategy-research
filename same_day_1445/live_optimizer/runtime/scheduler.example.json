@@ -1,0 +1,11 @@
+{
+  "python_exe": "python",
+  "repo_root": "C:\\path\\to\\etf-strategy-research",
+  "workspace_config": "C:\\path\\to\\live_optimizer\\workspace.json",
+  "task_prefix": "ETF-LiveOptimizer",
+  "tasks": {
+    "preclose": {"time": "14:45:30"},
+    "close": {"time": "15:10:00"},
+    "optimizer": {"time": "15:20:00"}
+  }
+}

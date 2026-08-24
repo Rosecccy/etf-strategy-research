@@ -1,0 +1,2 @@
+param([Parameter(Mandatory=$true)][string]$ConfigPath)
+$ErrorActionPreference="Stop";$cfg=Get-Content -Raw -Encoding UTF8 $ConfigPath|ConvertFrom-Json;$prefix=[string]$cfg.task_prefix;foreach($command in @('preclose','close','optimizer')){$taskName="$prefix-$command";$task=Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue;if($null -ne $task){Unregister-ScheduledTask -TaskName $taskName -Confirm:$false;Write-Host "Removed $taskName"}}
