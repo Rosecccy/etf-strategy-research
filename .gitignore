@@ -15,10 +15,15 @@ __pycache__/
 *.tmp
 *.log
 
-# Live self-optimizer runtime evidence/state. Keep templates/docs only.
-/same_day_1445/live_optimizer/ledger/*.csv
-/same_day_1445/live_optimizer/state/optimizer_state.json
+# Live self-optimizer runtime evidence/state. Keep source, examples and docs only.
+/same_day_1445/live_optimizer/ledger/*
+!/same_day_1445/live_optimizer/ledger/README.md
+/same_day_1445/live_optimizer/state/*
+!/same_day_1445/live_optimizer/state/optimizer_state.example.json
 /same_day_1445/live_optimizer/candidates/*
 /same_day_1445/live_optimizer/releases/*
 !/same_day_1445/live_optimizer/candidates/.gitkeep
 !/same_day_1445/live_optimizer/releases/.gitkeep
+/same_day_1445/live_optimizer/runtime/workspace.json
+/same_day_1445/live_optimizer/runtime/bootstrap.json
+/same_day_1445/live_optimizer/site/data/
