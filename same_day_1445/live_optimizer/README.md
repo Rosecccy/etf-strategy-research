@@ -1,90 +1,223 @@
 # 14:45 Live Self-Optimizer
 
-This package is the GPT-independent forward optimization core for the C/S/D/R 14:45 ETF research system.
+This package is the GPT-independent forward optimization runtime for the C/S/D/R 14:45 ETF research system. It collects new trading-day evidence, runs the frozen formal strategy and executable shadow candidates in parallel, evaluates only matured forward outcomes, detects drift, and can programmatically promote or roll back a candidate through hard gates.
 
-## Current status
+The canonical anchor remains `same_day_1445/release_v2`. The optimizer never rewrites that directory.
 
-Phase 1 is implemented as a provider-agnostic core and must run in `SHADOW_ONLY` by default. The canonical formal baseline remains `same_day_1445/release_v2`; this package never rewrites that directory.
+## What is implemented
 
-The core already provides:
+The experimental branch currently contains the complete programmatic loop:
 
-- append-only evidence ledgers with mutation conflict detection;
-- causal timestamp auditing;
-- bounded candidate-grid generation from `config/optimizer.json`;
-- C/S/R compound and D research-sum evaluation;
-- rolling-window comparison against the active formal release;
-- hard promotion gates for trigger retention, win rate, mean return, drawdown, recent-window stability, minimum new evidence, regime coverage, cooldown and parameter-neighborhood stability;
-- drift detection that can force `SHADOW_ONLY`;
-- immutable candidate/release manifests and rollback pointers;
-- deterministic daily optimizer and replay entry points.
+- true 14:45 minute snapshot acquisition with an Eastmoney provider and deterministic file-provider fixtures;
+- causal provisional daily-bar overlay into a dedicated C/S/D/R runtime copy;
+- adapters for the existing C/S/D formal engines;
+- safe current `R-single` routing from `R/formal/r_single_yearly_choice.csv`, with ambiguous cases failing closed;
+- V2 anchor signals plus executable shadow streams;
+- C `C_DELAY1` shadow execution;
+- bounded D strict/grid candidates for weak-market overheat and profit-giveback protection;
+- append-only signal, execution, closed-trade, optimizer, promotion and mode-change evidence;
+- same-opportunity formal/candidate matching so filtered trades remain part of trigger-retention accounting;
+- causal rolling evaluation, forward window checks and parameter-neighborhood stability;
+- frozen V2 anchor guard even after a newer formal release is active;
+- minimum-new-sample accounting that resets after promotion;
+- automatic promotion only when the account transition is safe;
+- automatic rollback after sufficient post-promotion live deterioration;
+- daily signal/data-quality drift plus closed-trade performance drift;
+- dependency/runtime health checks;
+- Windows Task Scheduler install/remove scripts;
+- read-only local HTML dashboard;
+- deterministic replay and immutable optimizer decision artifacts.
 
-Phase 2 will connect real 14:45 minute snapshots, close reconciliation and the existing C/S/D/R live signal entry points. Until that adapter phase is merged, `closed_trades.csv` is a normalized input ledger produced by tests or an external adapter, not a claim that GitHub itself is already collecting live market data.
+No runtime Python module in this package imports or calls GPT/LLM services.
 
-## Runtime layout
+## Safety model
 
-- `config/optimizer.json`: declared candidate spaces and hard gates.
-- `state/optimizer_state.example.json`: tracked initial template. Runtime creates ignored `state/optimizer_state.json` with active formal pointers and shadow leaders.
-- `ledger/closed_trades.csv`: matured formal/shadow evidence; append-only.
-- `ledger/optimizer_runs.csv`: deterministic optimizer run records.
-- `ledger/promotion.csv`: promotion/rollback events.
-- `candidates/<candidate_id>/manifest.json`: immutable candidate manifests.
-- `releases/<release_id>/manifest.json`: immutable promoted release manifests.
+Runtime modes are:
 
-Runtime ledgers are intentionally not pre-populated in Git. Production/forward evidence should be stored in controlled runtime storage and backed up independently.
+- `SHADOW_ONLY`: formal strategy continues, candidates learn/rank, no automatic formal promotion.
+- `NORMAL`: automatic promotion is allowed only if every configured gate passes.
+- `DATA_HOLD`: incomplete/stale data blocks affected evidence.
+- `ROLLBACK`: a promoted release has been reverted to its parent; the optimizer returns to protected shadow operation.
 
-## Normalized closed-trade schema
+Default promotion gates include:
 
-The Phase-1 evaluator consumes rows with at least:
+- trigger retention `>= 90%`;
+- rolling win-rate improvement `>= +0.5` percentage points;
+- mean closed-trade return must not decline;
+- maximum-drawdown deterioration `<= 1` percentage point;
+- sufficient eligible forward windows and recent-window stability;
+- stable neighboring parameter settings rather than an isolated optimum;
+- minimum new evidence since the last promotion;
+- cooldown and regime-coverage requirements;
+- continued comparison with the immutable V2 anchor.
 
-```text
-sample_id,line,candidate_id,decision_at,observable_at,entry_date,exit_date,ret,triggered,regime
-```
+Default new-evidence minimums are D=100 closed trades and C/S/R=15 closed trades with at least two regime buckets. A newly observed trading day can affect data-quality/trigger drift immediately, but it cannot be scored as a win or loss until the trade outcome is actually observable.
 
-Rules:
+## Required environments
 
-- `decision_at` is the decision timestamp being evaluated.
-- `observable_at` is the latest timestamp needed to construct that row's decision evidence and must be `<= decision_at`.
-- `candidate_id=release_v2` is the initial formal comparator.
-- `triggered` records whether an opportunity became an executed trade under that candidate.
-- `ret` is the closed-trade return used only after the label has matured.
-- `regime` is a bounded programmatic bucket used for minimum-regime coverage, not an LLM-generated label.
+Two directories have different roles:
 
-## Daily optimizer
+1. This Git repository contains the optimizer code and frozen V2 audit surface.
+2. A dedicated local runtime copy contains the full private C/S/D/R source package and mutable market/runtime files.
 
-With a populated runtime root:
+Do not point `runtime_root` at the archived source package itself. Bootstrap creates a disposable working copy so provisional 14:45 bars never rewrite the archive.
+
+Install the repository dependencies first:
 
 ```bash
-python -m same_day_1445.live_optimizer.jobs.run_daily_optimizer \
-  --root same_day_1445/live_optimizer \
-  --as-of 2026-08-23T16:00:00+08:00
+python -m pip install -r requirements.txt
 ```
 
-Replay the same evidence/config at the same timestamp:
+The live health check explicitly verifies the critical runtime modules used by the existing strategies, including `pandas`, `numpy`, `sklearn` and `pyarrow`. Missing dependencies are reported as `BLOCKED` rather than being treated as valid strategy evidence.
+
+## Bootstrap a dedicated runtime
+
+From the repository root, with an empty destination runtime directory:
+
+```bash
+python -m same_day_1445.live_optimizer.jobs.bootstrap_runtime \
+  --source-root "PATH_TO_FULL_CSDR_PACKAGE" \
+  --runtime-root "PATH_TO_DEDICATED_LIVE_COPY" \
+  --optimizer-root "same_day_1445/live_optimizer" \
+  --provider eastmoney
+```
+
+For deterministic offline testing, use `--provider file --file-root PATH_TO_MINUTE_FIXTURES`.
+
+Bootstrap writes the ignored runtime configuration to:
+
+```text
+same_day_1445/live_optimizer/runtime/workspace.json
+```
+
+and initializes the optimizer in `SHADOW_ONLY` unless an explicit deployment state already exists.
+
+## Health check
+
+Before scheduling or enabling automatic promotion:
+
+```bash
+python -m same_day_1445.live_optimizer.jobs.run_health \
+  --root same_day_1445/live_optimizer
+```
+
+A critical dependency, runtime-script, state, reconciliation or data-quality failure returns `BLOCKED` and exit code 2.
+
+## Daily pipeline
+
+The scheduler calls the same deterministic CLI manually available here:
+
+```bash
+python -m same_day_1445.live_optimizer.jobs.run_pipeline preclose \
+  --optimizer-root same_day_1445/live_optimizer \
+  --workspace-config same_day_1445/live_optimizer/runtime/workspace.json
+
+python -m same_day_1445.live_optimizer.jobs.run_pipeline close \
+  --optimizer-root same_day_1445/live_optimizer \
+  --workspace-config same_day_1445/live_optimizer/runtime/workspace.json
+
+python -m same_day_1445.live_optimizer.jobs.run_pipeline optimizer \
+  --optimizer-root same_day_1445/live_optimizer \
+  --workspace-config same_day_1445/live_optimizer/runtime/workspace.json
+```
+
+The pre-close job is launched after the 14:45 minute observation is available, but its decision cutoff remains exactly `14:45:00`; bars from 14:46 through 15:00 cannot enter the signal snapshot. The close job reconciles the official close/reference values and matures only completed trades. The optimizer then evaluates the newly matured evidence and updates shadow/promotion/rollback state.
+
+## Windows scheduling
+
+Copy and edit:
+
+```text
+same_day_1445/live_optimizer/runtime/scheduler.example.json
+```
+
+Recommended defaults are:
+
+- preclose: 14:45:30, with the internal cutoff fixed at 14:45;
+- close reconciliation: 15:10;
+- optimizer: 15:20.
+
+Install the tasks from PowerShell:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\same_day_1445\live_optimizer\ops\install_windows_tasks.ps1 `
+  -ConfigPath .\same_day_1445\live_optimizer\runtime\scheduler.json
+```
+
+Remove them with `remove_windows_tasks.ps1` using the same config. The scripts are idempotent and contain no repository-specific absolute user path.
+
+## Enabling automatic promotion
+
+Keep the system in `SHADOW_ONLY` while collecting genuinely new forward evidence. To enable `NORMAL`, first create a fresh V2 verification marker and pass the deployment health guard:
+
+```bash
+python -m same_day_1445.live_optimizer.jobs.set_mode NORMAL \
+  --root same_day_1445/live_optimizer \
+  --repo-root . \
+  --verify-v2
+```
+
+`NORMAL` does not mean a candidate is automatically accepted. It only permits promotion when the statistical, trigger, neighborhood, forward-window, minimum-sample, cooldown, V2-anchor and account-transition gates all pass. `NORMAL -> SHADOW_ONLY` is always permitted as a safety action.
+
+## Dashboard
+
+Build the read-only dashboard data:
+
+```bash
+python -m same_day_1445.live_optimizer.jobs.build_dashboard \
+  --root same_day_1445/live_optimizer
+```
+
+Serve it locally:
+
+```bash
+python -m same_day_1445.live_optimizer.jobs.serve_dashboard \
+  --root same_day_1445/live_optimizer \
+  --host 127.0.0.1 \
+  --port 8765
+```
+
+Then open `http://127.0.0.1:8765/`.
+
+The dashboard shows C/S/D/R formal release, V2 anchor, shadow leader, latest actions, forward-only metrics, new evidence count, gate status, drift/data quality, and promotion/rollback history. JavaScript is presentation-only and contains no trading or optimization logic.
+
+## Evidence and replay
+
+Important generated artifacts include:
+
+- `ledger/anchor_signals.csv`: frozen V2 anchor decisions;
+- `ledger/formal_signals.csv`: currently active formal decisions;
+- `ledger/shadow_signals.csv`: executable candidate decisions;
+- `ledger/closed_trades.csv`: matured comparable outcome evidence;
+- `ledger/optimizer_runs.csv`: optimizer-run hashes;
+- `ledger/optimizer_decisions/<hash>.json`: immutable decision artifacts;
+- `ledger/promotion.csv`: promotion/rollback history;
+- `state/optimizer_state.json`: active formal/shadow pointers;
+- `state/deployment_mode.json`: requested deployment mode;
+- `state/unreconciled_close.json`: unresolved close recovery state;
+- `state/latest_optimizer_decision.json`: latest read-only decision projection.
+
+Runtime evidence/state is ignored by Git and should be backed up separately.
+
+Replay the same mature evidence/config at the same timestamp with:
 
 ```bash
 python -m same_day_1445.live_optimizer.jobs.run_replay \
   --root same_day_1445/live_optimizer \
-  --as-of 2026-08-23T16:00:00+08:00
+  --as-of 2026-08-24T15:20:00+08:00
 ```
 
-The replay prints the deterministic `decision_hash`.
+The same inputs and configuration produce the same `decision_hash`.
 
-## Promotion behavior
+## Verification
 
-Three concepts are distinct:
+The experimental branch CI runs on Python 3.11 and requires all of the following:
 
-1. `formal`: currently active release.
-2. `shadow_leader`: best candidate that passed the configured gate using available matured evidence.
-3. `challengers`: other evaluated candidates.
+```text
+compile live_optimizer runtime
+pytest tests/
+verify_current_baseline.py
+reject GPT/LLM runtime dependencies
+```
 
-In `SHADOW_ONLY`, the program may update `shadow_leader` but cannot formal-promote. `release_manager.promote_candidate()` also enforces this at code level. In future `NORMAL` mode, promotion additionally requires a passed `GateResult`, sufficient forward evidence and a frozen candidate manifest.
-
-Default minimum new evidence is D=100 closed trades and C/S/R=15 closed trades with at least two regime buckets. These are config values, not hidden heuristics.
-
-## Safety
-
-- Severe live drift forces `SHADOW_ONLY`.
-- Duplicate ledger keys with changed content raise `LedgerConflictError`.
-- Candidate/release directories are immutable once created.
-- Rollback points to the previous formal release; history is never deleted.
-- No file under this package imports or calls GPT/LLM services.
+The frozen `same_day_1445/release_v2` audit remains an independent required check. New forward results do not rewrite historical V2 files.
