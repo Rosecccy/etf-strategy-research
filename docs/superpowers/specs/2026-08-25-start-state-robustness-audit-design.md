@@ -23,11 +23,13 @@ For each eligible start date `t`, run two paths from the same causal strategy st
 
 ### 3.1 Warm / inherited path
 
-Run the strategy from its canonical historical origin through `t`. At `t`, inherit the position that the canonical path actually holds, if any. Performance is then re-based to 1.0 at `t` and measured forward.
+Run the strategy from its canonical historical origin through `t`. At `t`, inherit the full position state that the canonical path actually holds, if any. Performance is re-based to 1.0 using marked-to-market equity at `t`; gains or losses that occurred before `t` are not counted in the forward result.
+
+If a position was opened before `t`, future exit logic must still use the true inherited entry date, entry price, holding age, and any other strategy state that the frozen policy needs. Only performance measurement is re-based.
 
 ### 3.2 Cold / flat path
 
-Use the same causal historical indicators, model parameters, rolling policy choices, and market data as the warm path, but force the account to cash at `t`. From that date onward, process signals normally under the strategy's position constraints.
+Use the same causal historical indicators, model parameters, rolling policy choices, and market data as the Warm path, but force the account to cash at `t`. From that date onward, process signals normally under the strategy's position constraints.
 
 The only intentional difference between Warm and Cold is the account state at `t`.
 
@@ -38,6 +40,8 @@ The only intentional difference between Warm and Cold is the account state at `t
 C, S, and R use the single-position compound-account convention. These lines receive the full Warm-vs-Cold account-state audit.
 
 The simulator must preserve each line's frozen V2 signal/evaluation semantics, including single-position exclusivity, same-day sell-then-switch behavior where already allowed, and the selected V2 execution overlay.
+
+All returns must be net of the same transaction-cost convention used by the frozen strategy evidence available to the audit. If exact historical fee reconstruction is not available for a line, the report must state the approximation rather than silently changing the accounting basis.
 
 ### 4.2 D
 
@@ -53,7 +57,7 @@ For computational diagnostics, results must also be aggregatable by:
 
 - calendar year;
 - calendar month;
-- whether the warm path is already in a position at the start;
+- whether the Warm path is already in a position at the start;
 - market regime if a causal regime label is already available;
 - distance to the nearest canonical BUY signal.
 
@@ -86,7 +90,7 @@ Fixed horizons are primary because comparing only terminal 2026 values gives ear
 For every `(line, start_date, path, horizon)` record at minimum:
 
 - start date;
-- warm start-position state and symbol;
+- Warm start-position state and symbol;
 - first accepted trade after start;
 - first Warm/Cold divergence date;
 - number of BUY signals blocked by an inherited position;
@@ -101,7 +105,12 @@ For every `(line, start_date, path, horizon)` record at minimum:
 - time to first path re-synchronization;
 - whether paths ever re-synchronize before horizon end.
 
-A re-synchronization occurs only when Warm and Cold have the same account position state after processing the same day's signal. A temporary coincidence in equity is not a re-synchronization.
+Trade-sequence similarity is reported as both:
+
+- Jaccard similarity of accepted trade identities `(symbol, entry_date)`;
+- ordered-prefix agreement until the first differing accepted trade.
+
+A re-synchronization occurs only when, after processing the same trading day, Warm and Cold have equivalent future-relevant strategy/account state: same cash-vs-position status, same held symbol if invested, same effective entry date and entry price, same holding age, and the same pending execution/overlay state required by the frozen policy. A temporary coincidence in equity, or merely holding the same symbol with different entry state, is not a re-synchronization.
 
 ## 9. Aggregate robustness metrics
 
@@ -139,11 +148,12 @@ All of the following:
 
 ### Moderately path-dependent
 
-The strategy fails at least one Robust criterion but still has:
+The strategy fails at least one Robust criterion but still has all of:
 
 - profitable-start ratio >= 60%;
 - median 3-year return > 0;
-- no more than 25% of starts remaining permanently unsynchronized within the 3-year horizon.
+- no more than 25% of starts remaining permanently unsynchronized within the 3-year horizon;
+- 90th-percentile Warm-vs-Cold cumulative-return gap <= 30 percentage points.
 
 ### Fragile
 
@@ -151,9 +161,11 @@ Any of the following:
 
 - profitable-start ratio < 60%;
 - median 3-year return <= 0;
-- 10th-percentile 3-year return is materially negative while the canonical path is strongly positive;
+- 10th-percentile 3-year cumulative return <= -10%;
 - more than 25% of starts never re-synchronize within 3 years;
-- Warm-vs-Cold 90th-percentile return gap > 30 percentage points.
+- Warm-vs-Cold 90th-percentile cumulative-return gap > 30 percentage points.
+
+If criteria overlap at a boundary, `Fragile` takes precedence, then `Moderately path-dependent`, then `Robust`.
 
 The 1-, 2-, and 5-year distributions are supporting evidence and must be shown even if the 3-year label is favorable.
 
@@ -193,11 +205,12 @@ No output from this audit is promotion evidence for the live optimizer.
 Before trusting the scan:
 
 1. A Warm run started on the canonical first eligible date must reproduce the frozen V2 C/S/R trade sequence within the data available to the audit.
-2. A Cold run started on a date when Warm is already flat must initially match Warm until a genuine later state divergence occurs.
+2. A Cold run started on a date when Warm is already flat and all future-relevant strategy state is equivalent must match Warm until a genuine later state divergence occurs.
 3. Re-running the same start date must be deterministic.
 4. No future data may affect parameters, signals, or account decisions before its timestamp.
 5. The frozen V2 verifier must still pass after the audit code is added.
 6. The audit must write only to its research output directory.
+7. The audit code must never read or write `same_day_1445/live_optimizer/state` or `ledger` except for an explicit read-only cross-check that is disabled by default.
 
 If any invariant fails, stop the robustness interpretation and treat it as an implementation/debugging failure.
 
