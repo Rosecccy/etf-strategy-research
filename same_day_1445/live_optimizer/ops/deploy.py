@@ -15,7 +15,7 @@ def _read_json(p):
     try:v=json.loads(p.read_text(encoding='utf-8-sig'))
     except json.JSONDecodeError:return None
     return v if isinstance(v,dict) else None
-def _atomic_json(p,v):p.parent.mkdir(parents=True,exist_ok=True);t=p.with_suffix(p.suffix+'.tmp');t.write_text(json.dumps(v,ensure_ascii=False,sort_keys=True,indent=2)+'\n');t.replace(p)
+def _atomic_json(p,v):p.parent.mkdir(parents=True,exist_ok=True);t=p.with_suffix(p.suffix+'.tmp');t.write_text(json.dumps(v,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8');t.replace(p)
 def _verified_v2(root,now,max_age_hours=24.0):
     m=_read_json(root/'state/v2_baseline_verified.json')
     if not m or m.get('ok') is not True or m.get('canonical_baseline')!='same_day_1445/release_v2':raise DeploymentError('V2 baseline verification marker is missing or invalid')

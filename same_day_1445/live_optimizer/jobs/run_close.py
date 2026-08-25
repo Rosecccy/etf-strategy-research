@@ -3,8 +3,7 @@ import argparse,json
 from datetime import date,datetime,time
 from pathlib import Path
 from typing import Callable
-from ..providers.eastmoney import EastmoneyMinuteProvider
-from ..providers.file_provider import FileMinuteProvider
+from ..providers.factory import build_provider
 from ..engine.forward_ledger import append_csv_record,drain_pending_trades
 from ..engine.snapshot import build_snapshot
 from ..engine.workspace import apply_snapshot_to_runtime,required_symbols
@@ -36,5 +35,5 @@ def run_close_cycle(optimizer_root,runtime_root,provider,trade_date,cutoff=time(
  if snap.get('rows'):apply_snapshot_to_runtime(runtime_root,snap['rows'],'live_optimizer:close')
  _write_unreconciled(optimizer_root,target,snap.get('errors',[]));observable_at=datetime.combine(trade_date,cutoff).isoformat();_append_execution_references(optimizer_root,snap,observable_at);m=drain_pending_trades(optimizer_root/'ledger/pending_closed_trades.jsonl',optimizer_root/'ledger/closed_trades.csv',observable_at);opt=optimizer_callback(optimizer_root,observable_at) if optimizer_callback else None;return {'trade_date':target,'status':status,'errors':snap.get('errors',[]),'matured_trades':len(m),'optimizer':opt}
 def main():
- p=argparse.ArgumentParser();p.add_argument('--optimizer-root',required=True);p.add_argument('--workspace-config',required=True);p.add_argument('--date',default=date.today().isoformat());a=p.parse_args();cfg=json.loads(Path(a.workspace_config).read_text());pcfg=cfg.get('provider',{});provider=FileMinuteProvider(Path(pcfg['file_root'])) if pcfg.get('kind')=='file' else EastmoneyMinuteProvider();r=run_close_cycle(Path(a.optimizer_root),Path(cfg['runtime_root']),provider,date.fromisoformat(a.date),time.fromisoformat(cfg.get('close_cutoff','15:00')),int(cfg.get('close_staleness_minutes',5)),None,int(cfg.get('close_workers',8)));print(json.dumps(r,ensure_ascii=False,indent=2,default=str))
+ p=argparse.ArgumentParser();p.add_argument('--optimizer-root',required=True);p.add_argument('--workspace-config',required=True);p.add_argument('--date',default=date.today().isoformat());a=p.parse_args();cfg=json.loads(Path(a.workspace_config).read_text());pcfg=cfg.get('provider',{});provider=build_provider(pcfg);r=run_close_cycle(Path(a.optimizer_root),Path(cfg['runtime_root']),provider,date.fromisoformat(a.date),time.fromisoformat(cfg.get('close_cutoff','15:00')),int(cfg.get('close_staleness_minutes',5)),None,int(cfg.get('close_workers',8)));print(json.dumps(r,ensure_ascii=False,indent=2,default=str))
 if __name__=='__main__':main()

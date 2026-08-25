@@ -27,3 +27,11 @@ __pycache__/
 /same_day_1445/live_optimizer/runtime/workspace.json
 /same_day_1445/live_optimizer/runtime/bootstrap.json
 /same_day_1445/live_optimizer/site/data/
+
+# Local test/runtime recovery artifacts
+.pytest_tmp/
+.pytest_tmp*/
+/same_day_1445/live_optimizer/recovery/
+/recover_close_*.py
+tencent_preclose_*.py
+check_0824_mismatches_tencent.py

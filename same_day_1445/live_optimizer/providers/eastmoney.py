@@ -15,5 +15,5 @@ class EastmoneyMinuteProvider:
         for item in ((payload or {}).get('data') or {}).get('klines') or []:
             parts=str(item).split(',')
             if len(parts)<7:continue
-            ts=datetime.fromisoformat(parts[0].replace(' ','T'));out.append(MinuteBar(ts,float(parts[1]),float(parts[3]),float(parts[4]),float(parts[2]),float(parts[5]),float(parts[6])))
+            ts=datetime.fromisoformat(parts[0].replace(' ','T'));out.append(MinuteBar(ts,float(parts[1]),float(parts[3]),float(parts[4]),float(parts[2]),float(parts[5])*100.0,float(parts[6])))
         return sorted(out,key=lambda x:x.timestamp)

@@ -13,5 +13,5 @@ def reconcile_unreconciled_close(optimizer_root,runtime_root,provider,max_stalen
     snap=build_snapshot(provider,symbols,trade_date,time(15,0),max_staleness_minutes,max_workers=max_workers)
     if snap.get('rows'):apply_snapshot_to_runtime(runtime_root,snap['rows'],'live_optimizer:close_recovery')
     errors=snap.get('errors',[]);remaining=sorted({str(x.get('symbol','')).zfill(6) for x in errors if x.get('symbol')})
-    if remaining:path.write_text(json.dumps({'trade_date':trade_date.isoformat(),'symbols':remaining,'errors':errors},ensure_ascii=False,sort_keys=True,indent=2)+'\n');return {'status':'DATA_HOLD','errors':errors,'symbols':remaining}
+    if remaining:path.write_text(json.dumps({'trade_date':trade_date.isoformat(),'symbols':remaining,'errors':errors},ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8');return {'status':'DATA_HOLD','errors':errors,'symbols':remaining}
     path.unlink(missing_ok=True);return {'status':'OK','errors':[],'symbols':[]}

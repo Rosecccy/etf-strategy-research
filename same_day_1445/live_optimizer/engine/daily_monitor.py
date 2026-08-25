@@ -2,6 +2,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 from typing import Any
+from .evidence import filter_evidence_rows
 
 def _bool(value:Any,default:bool=True)->bool:
     if value is None or str(value).strip()=="": return default
@@ -26,7 +27,7 @@ def summarize_daily_signals(rows:list[dict[str,Any]])->dict[str,float]:
 def detect_daily_signal_drift(root:Path,line:str,config:dict[str,Any])->dict[str,Any]:
     dc=config.get("drift",{});recent_days=int(dc.get("daily_recent_days",20) or 0);min_ref=int(dc.get("daily_min_reference_days",20) or 0)
     if recent_days<=0 or min_ref<=0:return {"severe":False,"breaches":[],"deltas":{},"recent":{},"reference":{},"eligible":False}
-    rows=_daily_rows(_read_rows(Path(root)/"ledger"/"formal_signals.csv"),line)
+    rows=_daily_rows(filter_evidence_rows(_read_rows(Path(root)/"ledger"/"formal_signals.csv"),config),line)
     if len(rows)<recent_days+min_ref:return {"severe":False,"breaches":[],"deltas":{},"recent":summarize_daily_signals(rows[-recent_days:] if recent_days else []),"reference":summarize_daily_signals(rows[:-recent_days] if recent_days else rows),"eligible":False}
     recent_rows=rows[-recent_days:];ref_rows=rows[:-recent_days];recent=summarize_daily_signals(recent_rows);ref=summarize_daily_signals(ref_rows);ad=recent["actionable_rate"]-ref["actionable_rate"]
     deltas={"actionable_rate":ad,"hold_rate":recent["hold_rate"]-ref["hold_rate"],"data_hold_rate":recent["data_hold_rate"]-ref["data_hold_rate"]};breaches=[]

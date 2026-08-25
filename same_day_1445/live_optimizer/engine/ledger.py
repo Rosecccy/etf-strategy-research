@@ -1,6 +1,7 @@
 from __future__ import annotations
-import csv, os, tempfile
+import csv, json, os, tempfile
 from pathlib import Path
+from .evidence import filter_evidence_rows
 class LedgerConflictError(RuntimeError):pass
 def _canon(row):
     out={}
@@ -8,14 +9,22 @@ def _canon(row):
     return out
 class AppendOnlyCsvLedger:
     def __init__(self,path,key_fields):self.path=Path(path);self.key_fields=tuple(key_fields);assert self.key_fields
-    def rows(self):
+    def _raw_rows(self):
         if not self.path.exists() or self.path.stat().st_size==0:return []
         with self.path.open('r',encoding='utf-8-sig',newline='') as h:return list(csv.DictReader(h))
+    def rows(self):
+        rows=self._raw_rows()
+        if self.path.name!='closed_trades.csv':return rows
+        cfg_path=self.path.parent.parent/'config'/'optimizer.json'
+        if not cfg_path.exists():return rows
+        try:cfg=json.loads(cfg_path.read_text(encoding='utf-8-sig'))
+        except (json.JSONDecodeError,OSError):return rows
+        return filter_evidence_rows(rows,cfg)
     def _key(self,row):return tuple(str(row.get(f,'')) for f in self.key_fields)
     def append(self,row):
         c=_canon(row)
         if any(f not in c for f in self.key_fields):raise ValueError(f'missing ledger key fields: {self.key_fields}')
-        existing=self.rows();key=self._key(c)
+        existing=self._raw_rows();key=self._key(c)
         for old in existing:
             if self._key(old)==key:
                 if old==c:return False

@@ -7,8 +7,7 @@ from typing import Any, Callable
 from ..engine.orchestrator import run_optimizer
 from ..ops.health import build_health_report
 from ..ops.dashboard import write_dashboard
-from ..providers.eastmoney import EastmoneyMinuteProvider
-from ..providers.file_provider import FileMinuteProvider
+from ..providers.factory import build_provider
 from .run_1445 import run_1445_cycle
 from .run_close import run_close_cycle
 
@@ -18,10 +17,7 @@ def _load(path: Path) -> dict[str, Any]:
 
 
 def _provider(cfg: dict[str, Any]):
-    provider_cfg = cfg.get('provider', {})
-    if provider_cfg.get('kind') == 'file':
-        return FileMinuteProvider(Path(provider_cfg['file_root']))
-    return EastmoneyMinuteProvider()
+    return build_provider(cfg.get('provider', {}))
 
 
 def _write_run_status(root: Path, command: str, observed_at: str) -> None:

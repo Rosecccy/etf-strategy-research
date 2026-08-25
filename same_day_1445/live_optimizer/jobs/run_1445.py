@@ -3,8 +3,7 @@ import argparse,hashlib,inspect,json
 from datetime import date,datetime,time
 from pathlib import Path
 from typing import Callable
-from ..providers.eastmoney import EastmoneyMinuteProvider
-from ..providers.file_provider import FileMinuteProvider
+from ..providers.factory import build_provider
 from ..engine.candidate_generator import generate_candidates
 from ..engine.active_policy import resolve_active_policy,ActivePolicyError
 from ..engine.forward_ledger import ForwardPositionBook,SkippedOpportunityBook,append_csv_record,append_pending_trade
@@ -104,7 +103,7 @@ def run_1445_cycle(optimizer_root,runtime_root,provider,trade_date,cutoff=time(1
                 for sr in skipped.finalize(trade,observed_at):append_pending_trade(optimizer_root/'ledger/pending_closed_trades.jsonl',sr)
     shadow_config=shadow_config or {};shadow=[];c_active=active_policies.get('C') is not None and active_policies['C'].module=='C_DELAY1'
     if (shadow_config.get('C_DELAY1',{}).get('enabled',True) or c_active) and signals['C'].tradable:
-        _write_module_manifest(optimizer_root,'C','C_DELAY1','C_DELAY1',{'delay_days':1});pp=optimizer_root/'state/c_delay1_pending.json';pending=json.loads(pp.read_text()) if pp.exists() and pp.read_text().strip() else None;c,p2=apply_c_delay1(signals['C'],pending,target);pp.parent.mkdir(parents=True,exist_ok=True);pp.write_text(json.dumps(p2,ensure_ascii=False,sort_keys=True) if p2 else '');shadow.append(('C','C_DELAY1',c))
+        _write_module_manifest(optimizer_root,'C','C_DELAY1','C_DELAY1',{'delay_days':1});pp=optimizer_root/'state/c_delay1_pending.json';pending=json.loads(pp.read_text()) if pp.exists() and pp.read_text().strip() else None;c,p2=apply_c_delay1(signals['C'],pending,target);pp.parent.mkdir(parents=True,exist_ok=True);pp.write_text(json.dumps(p2,ensure_ascii=False,sort_keys=True) if p2 else '',encoding='utf-8');shadow.append(('C','C_DELAY1',c))
     cache={}
     def features(symbol,current_price):
         key=(str(symbol).zfill(6),float(current_price))
@@ -141,5 +140,5 @@ def run_1445_cycle(optimizer_root,runtime_root,provider,trade_date,cutoff=time(1
     result={'trade_date':target,'status':status,'adapter_hold_lines':holds,'line_health':health,'prior_reconciliation':prior,'snapshot_hash':_stable_hash(snapshot),'signals':{k:v.__dict__ for k,v in active.items()},'anchor_signals':{k:v.__dict__ for k,v in signals.items()},'command_runs':command_runs,'shadow_count':len(shadow),'closed_now':len(anchor_trades)};_write_preclose_receipt(optimizer_root,target,result);return result
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--optimizer-root',required=True);p.add_argument('--workspace-config',required=True);p.add_argument('--date',default=date.today().isoformat());a=p.parse_args();cfg=json.loads(Path(a.workspace_config).read_text());pcfg=cfg.get('provider',{});provider=FileMinuteProvider(Path(pcfg['file_root'])) if pcfg.get('kind')=='file' else EastmoneyMinuteProvider();r=run_1445_cycle(Path(a.optimizer_root),Path(cfg['runtime_root']),provider,date.fromisoformat(a.date),time.fromisoformat(cfg.get('cutoff','14:45')),int(cfg.get('max_staleness_minutes',2)),shadow_config=cfg.get('shadow',{}),market_proxy=cfg.get('market_proxy','510500'),d_account_mode=cfg.get('d_account_mode','model'),snapshot_workers=int(cfg.get('snapshot_workers',8)));print(json.dumps(r,ensure_ascii=False,indent=2,default=str))
+    p=argparse.ArgumentParser();p.add_argument('--optimizer-root',required=True);p.add_argument('--workspace-config',required=True);p.add_argument('--date',default=date.today().isoformat());a=p.parse_args();cfg=json.loads(Path(a.workspace_config).read_text());pcfg=cfg.get('provider',{});provider=build_provider(pcfg);r=run_1445_cycle(Path(a.optimizer_root),Path(cfg['runtime_root']),provider,date.fromisoformat(a.date),time.fromisoformat(cfg.get('cutoff','14:45')),int(cfg.get('max_staleness_minutes',2)),shadow_config=cfg.get('shadow',{}),market_proxy=cfg.get('market_proxy','510500'),d_account_mode=cfg.get('d_account_mode','model'),snapshot_workers=int(cfg.get('snapshot_workers',8)));print(json.dumps(r,ensure_ascii=False,indent=2,default=str))
 if __name__=='__main__':main()
