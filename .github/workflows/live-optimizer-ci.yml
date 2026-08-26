@@ -7,6 +7,8 @@ on:
   pull_request:
     paths:
       - 'same_day_1445/live_optimizer/**'
+      - 'research/cost_sentiment_overlay/**'
+      - 'tests/test_cost_sentiment_overlay.py'
       - 'tests/test_live_optimizer_*.py'
       - 'tests/test_v2_audit_consistency.py'
       - 'scripts/verify_current_baseline.py'
@@ -15,7 +17,7 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,6 +32,18 @@ jobs:
         run: python -m pytest -q tests
       - name: Verify frozen V2 baseline
         run: python scripts/verify_current_baseline.py
+      - name: Run isolated cost sentiment experiment
+        if: success() && github.head_ref == 'research/cost-sentiment-overlay-20260826'
+        run: python -m research.cost_sentiment_overlay.run_experiment --output research/cost_sentiment_overlay/out/summary.json
+      - name: Print cost sentiment experiment summary
+        if: success() && github.head_ref == 'research/cost-sentiment-overlay-20260826'
+        run: cat research/cost_sentiment_overlay/out/summary.json
+      - name: Upload cost sentiment experiment outputs
+        if: success() && github.head_ref == 'research/cost-sentiment-overlay-20260826'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cost-sentiment-overlay-results
+          path: research/cost_sentiment_overlay/out/
       - name: Reject GPT/LLM runtime dependencies
         shell: python
         run: |
