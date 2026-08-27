@@ -1,0 +1,137 @@
+{
+  "mode": "SHADOW_ONLY",
+  "cooldown_days": 20,
+  "gates": {
+    "trigger_retention_min": 0.9,
+    "win_rate_delta_min": 0.005,
+    "mean_return_delta_min": 0.0,
+    "max_drawdown_deterioration_max": 0.01,
+    "recent_windows_improve_fraction_min": 0.6666666667,
+    "recent_window_win_rate_regression_max": 0.0,
+    "neighbor_pass_rate_min": 0.5,
+    "minimum_evaluation_windows": 3
+  },
+  "drift": {
+    "trigger_rate_abs_max": 0.3,
+    "win_rate_abs_max": 0.3,
+    "mean_return_abs_max": 0.1,
+    "recent_count": 20,
+    "daily_recent_days": 20,
+    "daily_min_reference_days": 20,
+    "daily_actionable_rate_abs_max": 0.35,
+    "daily_data_hold_rate_max": 0.1
+  },
+  "lines": {
+    "C": {
+      "minimum_new_samples": 15,
+      "minimum_regimes": 2,
+      "accounting": "compound"
+    },
+    "S": {
+      "minimum_new_samples": 15,
+      "minimum_regimes": 2,
+      "accounting": "compound"
+    },
+    "D": {
+      "minimum_new_samples": 100,
+      "minimum_regimes": 1,
+      "accounting": "research_sum"
+    },
+    "R": {
+      "minimum_new_samples": 15,
+      "minimum_regimes": 2,
+      "accounting": "compound"
+    }
+  },
+  "candidate_spaces": {
+    "C": {
+      "delay_days": [
+        0,
+        1
+      ]
+    },
+    "S": {
+      "entry_guard_strength": [
+        0.0,
+        0.5,
+        1.0
+      ]
+    },
+    "D": {
+      "weak_market_return": [
+        -0.05,
+        0.0,
+        0.05
+      ],
+      "overheat_ma20": [
+        0.06,
+        0.08,
+        0.1
+      ],
+      "profit_arm": [
+        0.18,
+        0.2,
+        0.22
+      ],
+      "giveback": [
+        0.015,
+        0.02,
+        0.025,
+        0.03
+      ],
+      "minimum_hold_days": [
+        5,
+        10,
+        15
+      ]
+    },
+    "R": {
+      "entry_guard_strength": [
+        0.0,
+        0.5,
+        1.0
+      ]
+    }
+  },
+  "evaluation_windows": [
+    {
+      "name": "recent_1",
+      "start": "2024-01-01",
+      "end": "2024-12-31"
+    },
+    {
+      "name": "recent_2",
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    {
+      "name": "recent_3",
+      "start": "2026-01-01",
+      "end": "2026-12-31"
+    }
+  ],
+  "forward_evaluation": {
+    "window_count": 3,
+    "minimum_opportunities_per_window": {
+      "C": 5,
+      "S": 5,
+      "D": 30,
+      "R": 5
+    }
+  },
+  "rollback": {
+    "enabled": true,
+    "minimum_new_samples": {
+      "C": 5,
+      "S": 5,
+      "D": 30,
+      "R": 5
+    },
+    "trigger_retention_min": 0.7,
+    "win_rate_delta_min": -0.15,
+    "mean_return_delta_min": -0.01,
+    "max_drawdown_deterioration_max": 0.1,
+    "breach_count_min": 2
+  },
+  "evidence_start_date": "2026-08-26"
+}

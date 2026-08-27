@@ -1,0 +1,45 @@
+name: live-optimizer-ci
+
+on:
+  push:
+    branches:
+      - opt/live-self-optimizer-v1
+  pull_request:
+    paths:
+      - 'same_day_1445/live_optimizer/**'
+      - 'tests/test_live_optimizer_*.py'
+      - 'tests/test_v2_audit_consistency.py'
+      - 'scripts/verify_current_baseline.py'
+      - '.github/workflows/live-optimizer-ci.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt pytest
+      - name: Compile runtime
+        run: python -m compileall -q same_day_1445/live_optimizer
+      - name: Run repository tests
+        run: python -m pytest -q tests
+      - name: Verify frozen V2 baseline
+        run: python scripts/verify_current_baseline.py
+      - name: Reject GPT/LLM runtime dependencies
+        shell: python
+        run: |
+          from pathlib import Path
+          needles = ('openai', 'chatgpt', 'gpt', 'llm')
+          hits = []
+          for path in Path('same_day_1445/live_optimizer').rglob('*.py'):
+              text = path.read_text(encoding='utf-8').lower()
+              for needle in needles:
+                  if needle in text:
+                      hits.append((str(path), needle))
+          print('hits:', hits)
+          raise SystemExit(1 if hits else 0)

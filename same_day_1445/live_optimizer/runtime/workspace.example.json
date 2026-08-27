@@ -1,0 +1,38 @@
+{
+  "runtime_root": "E:/ETF/runtime_live",
+  "provider": {
+    "kind": "eastmoney",
+    "file_root": ""
+  },
+  "cutoff": "14:45",
+  "close_cutoff": "15:00",
+  "max_staleness_minutes": 2,
+  "market_proxy": "510500",
+  "shadow": {
+    "C_DELAY1": {
+      "enabled": true
+    },
+    "D_STRICT": {
+      "enabled": false,
+      "params": {
+        "market_ret120_max": 0.0,
+        "overheat": 0.08,
+        "profit_arm": 0.2,
+        "giveback": 0.02,
+        "min_hold_days": 10
+      }
+    },
+    "D_GRID": {
+      "enabled": true
+    }
+  },
+  "d_account_mode": "model",
+  "snapshot_workers": 8,
+  "close_workers": 8,
+  "required_python_modules": [
+    "pandas",
+    "numpy",
+    "sklearn",
+    "pyarrow"
+  ]
+}

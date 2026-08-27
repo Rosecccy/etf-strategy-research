@@ -1,0 +1,6 @@
+{
+  "C": {"command": ["C/src/run_daily.py", "--skip-update"], "output": "C/live/today_decision.csv"},
+  "S": {"command": ["S/src/run_s1_live.py"], "output": "S/live/today_decision.csv"},
+  "D": {"command": ["D/src/daily_panic_live.py"], "output": "D/live/daily_panic_today.json"},
+  "R": {"policy_file": "R/formal/r_single_yearly_choice.csv", "supported_policy_ids": ["base_CS"]}
+}

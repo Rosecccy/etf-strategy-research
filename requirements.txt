@@ -8,3 +8,4 @@ streamlit
 joblib
 pyarrow
 openpyxl
+lightgbm
