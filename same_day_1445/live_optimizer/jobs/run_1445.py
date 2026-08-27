@@ -103,7 +103,7 @@ def run_1445_cycle(optimizer_root,runtime_root,provider,trade_date,cutoff=time(1
                 for sr in skipped.finalize(trade,observed_at):append_pending_trade(optimizer_root/'ledger/pending_closed_trades.jsonl',sr)
     shadow_config=shadow_config or {};shadow=[];c_active=active_policies.get('C') is not None and active_policies['C'].module=='C_DELAY1'
     if (shadow_config.get('C_DELAY1',{}).get('enabled',True) or c_active) and signals['C'].tradable:
-        _write_module_manifest(optimizer_root,'C','C_DELAY1','C_DELAY1',{'delay_days':1});pp=optimizer_root/'state/c_delay1_pending.json';pending=json.loads(pp.read_text()) if pp.exists() and pp.read_text().strip() else None;c,p2=apply_c_delay1(signals['C'],pending,target);pp.parent.mkdir(parents=True,exist_ok=True);pp.write_text(json.dumps(p2,ensure_ascii=False,sort_keys=True) if p2 else '',encoding='utf-8');shadow.append(('C','C_DELAY1',c))
+        _write_module_manifest(optimizer_root,'C','C_DELAY1','C_DELAY1',{'delay_days':1});pp=optimizer_root/'state/c_delay1_pending.json';pending=json.loads(pp.read_text(encoding='utf-8')) if pp.exists() and pp.read_text(encoding='utf-8').strip() else None;c,p2=apply_c_delay1(signals['C'],pending,target);pp.parent.mkdir(parents=True,exist_ok=True);pp.write_text(json.dumps(p2,ensure_ascii=False,sort_keys=True) if p2 else '',encoding='utf-8');shadow.append(('C','C_DELAY1',c))
     cache={}
     def features(symbol,current_price):
         key=(str(symbol).zfill(6),float(current_price))
